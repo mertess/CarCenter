@@ -1,5 +1,8 @@
 C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\bin\Debug\netstandard2.0\CarCenterImplementation.deps.json
 C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\bin\Debug\netstandard2.0\CarCenterImplementation.dll
-C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.csprojAssemblyReference.cache
 C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.AssemblyInfoInputs.cache
 C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.AssemblyInfo.cs
+C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\bin\Debug\netstandard2.0\CarCenterImplementation.pdb
+C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.csproj.CoreCompileInputs.cache
+C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.dll
+C:\Users\trtr\source\repos\CarCenter\CarCenterImplementation\obj\Debug\netstandard2.0\CarCenterImplementation.pdb

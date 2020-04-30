@@ -1,0 +1,8 @@
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\bin\Debug\netstandard2.0\CarCenterBusinessLogic.deps.json
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\bin\Debug\netstandard2.0\CarCenterBusinessLogic.dll
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\bin\Debug\netstandard2.0\CarCenterBusinessLogic.pdb
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\obj\Debug\netstandard2.0\CarCenterBusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\obj\Debug\netstandard2.0\CarCenterBusinessLogic.AssemblyInfoInputs.cache
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\obj\Debug\netstandard2.0\CarCenterBusinessLogic.AssemblyInfo.cs
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\obj\Debug\netstandard2.0\CarCenterBusinessLogic.dll
+C:\Users\trtr\source\repos\CarCenter\CarCenterBusinessLogic\obj\Debug\netstandard2.0\CarCenterBusinessLogic.pdb

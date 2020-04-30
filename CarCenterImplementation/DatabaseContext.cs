@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CarCenterImplementation.Models;
 
 namespace CarCenterImplementation
 {
@@ -12,9 +13,16 @@ namespace CarCenterImplementation
             if (optionsBuilder.IsConfigured == false)
             {
                 optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-BIJFUOL;
-                Initial Catalog=DressesShopDatabase;Integrated Security=True;MultipleActiveResultSets=True;");
+                Initial Catalog=CarCenterDataBase;Integrated Security=True;MultipleActiveResultSets=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }
+
+        public virtual DbSet<Car> Cars { set; get; }
+        public virtual DbSet<CarKit> CarKits { set; get; }
+        public virtual DbSet<Kit> Kits { set; get; }
+        public virtual DbSet<DepositKitDate> DepositKitDates { set; get; }
+        public virtual DbSet<Storage> Storages { set; get; }
+        public virtual DbSet<StorageKit> StorageKits { set; get; }
     }
 }
