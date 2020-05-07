@@ -6,7 +6,7 @@ namespace CarCenterBusinessLogic.BindingModels
 {
     public class StorageBindingModel
     {
-        public int Id { set; get; }
+        public int? Id { set; get; }
         public string StorageName { set; get; }
     }
 }

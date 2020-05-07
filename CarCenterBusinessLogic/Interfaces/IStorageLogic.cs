@@ -12,6 +12,6 @@ namespace CarCenterBusinessLogic.Interfaces
         void Delete(StorageViewModel model);
         List<StorageViewModel> Read(StorageBindingModel model);
         //void AddKit();
-        bool RemoveKits(CarBindingModel model);
+        void RemoveKits(CarBindingModel model);
     }
 }

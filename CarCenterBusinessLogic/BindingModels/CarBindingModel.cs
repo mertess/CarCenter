@@ -6,7 +6,7 @@ namespace CarCenterBusinessLogic.BindingModels
 {
     public class CarBindingModel
     {
-        public int Id { set; get; }
+        public int? Id { set; get; }
         public string CarName { set; get; }
         public int Cost { set; get; }
         public DateTime? SoldDate { set; get; }

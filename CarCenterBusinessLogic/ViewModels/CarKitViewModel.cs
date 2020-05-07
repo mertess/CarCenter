@@ -4,12 +4,12 @@ using System.Text;
 
 namespace CarCenterBusinessLogic.ViewModels
 {
-    public class ReportActionKitsViewModel
+    public class CarKitViewModel
     {
-        public DateTime DateAction { set; get; }
+        public int KitId { set; get; }
         public string KitName { set; get; }
-        public int KitCost { set; get; }
+        public string CarName { set; get; }
         public int KitCount { set; get; }
-        public string Action { set; get; }
+        public DateTime InstallationDate { set; get; }
     }
 }
