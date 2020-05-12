@@ -6,7 +6,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 
-namespace DressesShopBusinessLogic.HelperModels
+namespace CarCenterBusinessLogic.BusinessLogic
 {
     class ExcelCellParameters
     {

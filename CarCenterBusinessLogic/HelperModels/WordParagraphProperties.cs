@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace DressesShopBusinessLogic.HelperModels
+namespace CarCenterBusinessLogic.BusinessLogic
 {
     class WordParagraphProperties
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DressesShopBusinessLogic.HelperModels
+namespace CarCenterBusinessLogic.BusinessLogic
 {
     class WordParagraph
     {

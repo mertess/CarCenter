@@ -23,6 +23,7 @@ namespace CarCenterImplementation.Implements
                     {
                         KitId = ck.Kit.Id,
                         KitName = ck.Kit.KitName,
+                        KitCost = ck.Kit.Cost,
                         KitCount = ck.KitCount,
                         CarName = ck.Car.CarName,
                         InstallationDate = ck.InstallationDate
@@ -41,6 +42,7 @@ namespace CarCenterImplementation.Implements
                     .Select(dk => new DepositKitViewModel()
                     {
                         KitId = dk.KitId,
+                        KitCost = dk.Kit.Cost,
                         KitName = dk.Kit.KitName,
                         KitCount = dk.KitCount,
                         DepositDate = dk.DepositDate

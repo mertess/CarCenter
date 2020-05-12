@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarCenterImplementation.Implements
 {
@@ -55,12 +56,17 @@ namespace CarCenterImplementation.Implements
             using (DatabaseContext context = new DatabaseContext())
             {
                 return context.Cars.Where(c => model == null || model.Id.HasValue && c.Id == model.Id.Value)
+                    .Include(c => c.CarKits)
+                    .ToList()
                     .Select(c => new CarViewModel()
                     {
                         Id = c.Id,
                         CarName = c.CarName,
                         Cost = c.Cost,
-                        SoldDate = c.SoldDate
+                        SoldDate = c.SoldDate,
+                        CarKits = c.CarKits.ToDictionary(
+                            key => context.Kits.FirstOrDefault(k => k.Id == key.KitId).KitName,
+                            value => (value.KitCount, value.InstallationDate))
                     })
                     .ToList();
             }

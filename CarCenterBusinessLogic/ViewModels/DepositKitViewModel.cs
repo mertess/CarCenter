@@ -9,6 +9,7 @@ namespace CarCenterBusinessLogic.ViewModels
         public int KitId { set; get; }
         public string KitName { set; get; }
         public int KitCount { set; get; }
+        public int KitCost { set; get; }
         public DateTime DepositDate { set; get; }
     }
 }

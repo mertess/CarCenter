@@ -10,5 +10,6 @@ namespace CarCenterBusinessLogic.ViewModels
         public int Id { set; get; }
         [DisplayName("Комплектация")]
         public string KitName { set; get; }
+        public int KitCost { set; get; }
     }
 }
