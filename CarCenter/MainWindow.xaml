@@ -7,6 +7,34 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18*"></RowDefinition>
+            <RowDefinition Height="401*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row ="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Ресурсы">
+                <MenuItem Header="Комплектации"></MenuItem>
+                <MenuItem Header="Машины"></MenuItem>
+                <MenuItem Header="Хранилища"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Отчеты">
+                <MenuItem Header="Проданные машины"></MenuItem>
+                <MenuItem Header="Движение комплектаций"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="Собранные машины">
+            <DataGrid x:Name="DataGridCars"/>
+        </GroupBox>
+        <GroupBox Grid.Row ="1"  Grid.Column="1" Header="Операции">
+            <StackPanel>
+                <Button  x:Name="ButtonCreate" Margin="5 15 5 5">Собрать машину</Button>
+                <Button  x:Name="ButtonEdit" Margin="5 2 5 5">Редактировать</Button>
+                <Button  x:Name="ButtonDelete" Margin="5 2 5 5">Разобрать</Button>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>

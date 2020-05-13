@@ -1,0 +1,25 @@
+﻿<Window x:Class="CarCenter.CarsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarCenter"
+        mc:Ignorable="d"
+        Title="Список машин" Height="350" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Машины">
+            <DataGrid></DataGrid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Операции">
+            <StackPanel>
+                <Button x:Name="ButtonAddCar" Margin="5 5 5 5">Добавить</Button>
+                <Button x:Name="ButtonEditCar" Margin="5 5 5 5">Изменить</Button>
+                <Button x:Name="ButtonDeleteCar" Margin="5 5 5 5">Удалить</Button>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>

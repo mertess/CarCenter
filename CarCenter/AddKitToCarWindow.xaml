@@ -1,0 +1,41 @@
+﻿<Window x:Class="CarCenter.AddKitToCarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarCenter"
+        mc:Ignorable="d"
+        Title="Добавление комплектации" Height="170" Width="420">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.ColumnSpan="1"
+               Margin="5 20 5 5"
+               HorizontalAlignment="Right"
+               >Выберите комплектацию:</Label>
+        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+                  Margin="0 25 5 5" Width ="200"/>
+        <Label Grid.Row="1" Grid.ColumnSpan="1"
+               Margin="5 5 5 5"
+               HorizontalAlignment="Right"
+               >Количество:</Label>
+        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3"
+                  Margin="0 5 5 5" Width ="200"/>
+        <Button x:Name="buttonCancel"
+                Grid.Row="3" Grid.Column="2"
+                Margin="5 5 5 5" Width="100" Height="25">Назад</Button>
+        <Button x:Name="buttonAccept"
+                Grid.Row="3" Grid.Column="3"
+                Margin="5 5 20 5" Width="100" Height="25"
+                >Принять</Button>
+    </Grid>
+</Window>
