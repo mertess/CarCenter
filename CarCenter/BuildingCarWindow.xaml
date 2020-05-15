@@ -22,13 +22,19 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Устанавливаемые комплектации">
-            <DataGrid></DataGrid>
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridCarKits">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Комплектация" Width="*" Binding="{Binding KitName}"/>
+                    <DataGridTextColumn Header="Количество" Width="*" Binding="{Binding KitCount}"/>
+                    <DataGridTextColumn Header="Дата установки" Width="*" Binding="{Binding InstallationDate}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </GroupBox>
         <GroupBox Grid.Row="1" Grid.Column="1" Header="Операции">
             <StackPanel>
-                <Button x:Name="ButtonAddKit" Margin="5 5 5 5">Добавить</Button>
-                <Button x:Name="ButtonEditKit" Margin="5 5 5 5">Изменить</Button>
-                <Button x:Name="ButtonDeleteKit" Margin="5 5 5 5">Удалить</Button>
+                <Button x:Name="ButtonAddKit" Margin="5 5 5 5" Click="ButtonAddKit_Click">Добавить</Button>
+                <Button x:Name="ButtonEditKit" Margin="5 5 5 5" Click="ButtonEditKit_Click">Изменить</Button>
+                <Button x:Name="ButtonDeleteKit" Margin="5 5 5 5" Click="ButtonDeleteKit_Click">Удалить</Button>
             </StackPanel>
         </GroupBox>
     </Grid>

@@ -12,13 +12,18 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="Машины">
-            <DataGrid></DataGrid>
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название машины" Width="*" Binding="{Binding CarName}"/>
+                    <DataGridTextColumn Header="Стоимость" Width="*" Binding="{Binding Cost}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Операции">
             <StackPanel>
-                <Button x:Name="ButtonAddCar" Margin="5 5 5 5">Добавить</Button>
-                <Button x:Name="ButtonEditCar" Margin="5 5 5 5">Изменить</Button>
-                <Button x:Name="ButtonDeleteCar" Margin="5 5 5 5">Удалить</Button>
+                <Button x:Name="ButtonAddCar" Margin="5 5 5 5" Click="ButtonAddCar_Click">Добавить</Button>
+                <Button x:Name="ButtonEditCar" Margin="5 5 5 5" Click="ButtonEditCar_Click">Изменить</Button>
+                <Button x:Name="ButtonDeleteCar" Margin="5 5 5 5" Click="ButtonDeleteCar_Click">Удалить</Button>
             </StackPanel>
         </GroupBox>
     </Grid>

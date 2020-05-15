@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="453.612">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18*"></RowDefinition>
@@ -17,23 +17,29 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row ="0" Grid.ColumnSpan="2">
             <MenuItem Header="Ресурсы">
-                <MenuItem Header="Комплектации"></MenuItem>
-                <MenuItem Header="Машины"></MenuItem>
-                <MenuItem Header="Хранилища"></MenuItem>
+                <MenuItem Header="Комплектации" Click="Click_KitsMenuItem"></MenuItem>
+                <MenuItem Header="Машины" Click="Click_CarsMenuItem"></MenuItem>
+                <MenuItem Header="Хранилища" Click="Click_StoragesMenuItem"></MenuItem>
             </MenuItem>
             <MenuItem Header="Отчеты">
-                <MenuItem Header="Проданные машины"></MenuItem>
-                <MenuItem Header="Движение комплектаций"></MenuItem>
+                <MenuItem Header="Проданные машины" Click="Click_ReportSoldCarsMenuItem"></MenuItem>
+                <MenuItem Header="Движение комплектаций" Click="Click_ReportKitsMovingMenuItem"></MenuItem>
             </MenuItem>
         </Menu>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Собранные машины">
-            <DataGrid x:Name="DataGridCars"/>
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="*" />
+                    <DataGridTextColumn Header="Цена" Binding="{Binding Cost}" Width="*" />
+                    <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
         </GroupBox>
         <GroupBox Grid.Row ="1"  Grid.Column="1" Header="Операции">
             <StackPanel>
-                <Button  x:Name="ButtonCreate" Margin="5 15 5 5">Собрать машину</Button>
-                <Button  x:Name="ButtonEdit" Margin="5 2 5 5">Редактировать</Button>
-                <Button  x:Name="ButtonDelete" Margin="5 2 5 5">Разобрать</Button>
+                <Button  x:Name="ButtonCreate" Margin="5 15 5 5" Click="ButtonCreate_Click">Собрать машину</Button>
+                <Button  x:Name="ButtonEdit" Margin="5 2 5 5" Click="ButtonEdit_Click">Редактировать</Button>
+                <Button  x:Name="ButtonDelete" Margin="5 2 5 5" Click="ButtonDelete_Click">Разобрать</Button>
             </StackPanel>
         </GroupBox>
     </Grid>
