@@ -1,4 +1,5 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
+using CarCenterBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,7 @@ namespace CarCenter
             if (DataGridKits.SelectedItems.Count == 1)
             {
                 var window = container.Resolve<KitWindow>();
+                window.DataContext = DataGridKits.SelectedItem as KitViewModel;
                 if (window.ShowDialog().Value)
                 {
                     Load_Data();
@@ -70,7 +72,8 @@ namespace CarCenter
         {
             if(DataGridKits.SelectedItems.Count == 1)
             {
-                //...
+                kitLogic.Delete(DataGridKits.SelectedItem as KitViewModel);
+                Load_Data();
             }
         }
     }

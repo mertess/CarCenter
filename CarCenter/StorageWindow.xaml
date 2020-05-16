@@ -15,21 +15,24 @@
             <Label Margin="5 5 5 5" Padding="5 5 25 5" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center">Название хранилища:</Label>
-            <TextBox x:Name="KitNameTextBox"
+            <TextBox x:Name="StorageNameTextBox"
                      Margin="10 10 10 10" Width="160"
-                     HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Text="{Binding StorageName}"></TextBox>
         </StackPanel>
         <DockPanel Grid.Row="1" LastChildFill="False">
             <Button 
                 DockPanel.Dock="Right" 
                 x:Name="buttonAccept" 
                 Width="70" Margin="10 10 10 10"
-                Padding="5 5 5 5">Принять</Button>
+                Padding="5 5 5 5"
+                Click="buttonAccept_Click">Принять</Button>
             <Button 
                 DockPanel.Dock="Right" 
                 x:Name="buttonCancel" 
                 Width="70" Margin="10 10 10 10" 
-                Padding="5 5 5 5">Назад</Button>
+                Padding="5 5 5 5"
+                Click="buttonCancel_Click">Назад</Button>
         </DockPanel>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
+using CarCenterBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,7 @@ namespace CarCenter
             if(DataGridCars.SelectedItems.Count == 1)
             {
                 var window = container.Resolve<CarWindow>();
+                window.DataContext = DataGridCars.SelectedItem as CarViewModel;
                 if (window.ShowDialog().Value)
                 {
                     Load_Data();
@@ -67,7 +69,11 @@ namespace CarCenter
 
         private void ButtonDeleteCar_Click(object sender, RoutedEventArgs e)
         {
-            //...
+            if(DataGridCars.SelectedItems.Count == 1)
+            {
+                carLogic.Delete(DataGridCars.SelectedItem as CarViewModel);
+                Load_Data();
+            }
         }
     }
 }

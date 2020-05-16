@@ -8,7 +8,7 @@ namespace CarCenterBusinessLogic.ViewModels
     public class StorageViewModel
     {
         public int Id { set; get; }
-        [DisplayName("Хранилище")]
         public string StorageName { set; get; }
+        public Dictionary<string, int> StoragedKits { set; get; }
     }
 }

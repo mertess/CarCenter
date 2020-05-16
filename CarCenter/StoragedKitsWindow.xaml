@@ -11,7 +11,12 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="Комплектации">
-            <DataGrid></DataGrid>
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridStoragedKits">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Комплектация" Width="*" Binding="{Binding Key}"/>
+                    <DataGridTextColumn Header="Количество" Width="auto" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </GroupBox>
     </Grid>
 </Window>

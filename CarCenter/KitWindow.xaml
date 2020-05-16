@@ -18,7 +18,8 @@
                    VerticalAlignment="Center">Название комплектации:</Label>
             <TextBox x:Name="KitNameTextBox"
                      Margin="10 10 10 10" Width="150"
-                     HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Text="{Binding KitName}"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Label Margin="5 5 5 5" Padding="5 5 5 5" 
@@ -26,19 +27,22 @@
                    VerticalAlignment="Center">Стоимость комплектации:</Label>
             <TextBox x:Name="KitCostTextBox"
                      Margin="10 10 10 10" Width="150"
-                     HorizontalAlignment="Center" VerticalAlignment="Center"></TextBox>
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Text="{Binding KitCost}"></TextBox>
         </StackPanel>
         <DockPanel Grid.Row="2" LastChildFill="False">
             <Button 
                 DockPanel.Dock="Right" 
                 x:Name="buttonAccept" 
                 Width="70" Margin="10 10 10 10"
-                Padding="5 5 5 5">Принять</Button>
+                Padding="5 5 5 5"
+                Click="buttonAccept_Click">Принять</Button>
             <Button 
                 DockPanel.Dock="Right" 
                 x:Name="buttonCancel" 
                 Width="70" Margin="10 10 10 10" 
-                Padding="5 5 5 5">Назад</Button>
+                Padding="5 5 5 5"
+                Click="buttonCancel_Click">Назад</Button>
         </DockPanel>
     </Grid>
 </Window>

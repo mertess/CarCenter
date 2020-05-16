@@ -54,7 +54,8 @@ namespace CarCenterImplementation.Implements
                     .Select(k => new KitViewModel()
                     {
                         Id = k.Id,
-                        KitName = k.KitName
+                        KitName = k.KitName,
+                        KitCost = k.Cost
                     })
                     .ToList();
             }

@@ -51,10 +51,14 @@ namespace CarCenterImplementation.Implements
             using (DatabaseContext context = new DatabaseContext())
             {
                 return context.Storages.Where(s => model == null || model.Id.HasValue && s.Id == model.Id.Value)
+                    .ToList()
                     .Select(s => new StorageViewModel()
                     {
                         Id = s.Id,
-                        StorageName = s.StorageName
+                        StorageName = s.StorageName,
+                        StoragedKits = context.StorageKits.Where(sk => sk.StorageId == s.Id)
+                        .Include(sk => sk.Kit)
+                        .ToDictionary(key => key.Kit.KitName, value => value.KitCount)
                     })
                     .ToList();
             }
