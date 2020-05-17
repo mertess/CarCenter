@@ -24,5 +24,6 @@ namespace CarCenterImplementation
         public virtual DbSet<DepositKitDate> DepositKitDates { set; get; }
         public virtual DbSet<Storage> Storages { set; get; }
         public virtual DbSet<StorageKit> StorageKits { set; get; }
+        public virtual DbSet<BuiltCar> BuiltCars { set; get; }
     }
 }

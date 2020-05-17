@@ -18,14 +18,15 @@ namespace CarCenterImplementation.Implements
             {
                 return context.CarKits
                     .Where(ck => ck.InstallationDate >= model.DateFrom && ck.InstallationDate <= model.DateTo)
-                    .Include(ck => ck.Kit).Include(ck => ck.Car)
+                    .Include(ck => ck.Kit)
                     .Select(ck => new CarKitViewModel()
                     {
                         KitId = ck.Kit.Id,
                         KitName = ck.Kit.KitName,
                         KitCost = ck.Kit.Cost,
                         KitCount = ck.KitCount,
-                        CarName = ck.Car.CarName,
+                        CarName = context.BuiltCars.Include(bc => bc.Car)
+                        .FirstOrDefault(bc => bc.Id == ck.BuiltCarId).Car.CarName,
                         InstallationDate = ck.InstallationDate
                     })
                     .ToList();

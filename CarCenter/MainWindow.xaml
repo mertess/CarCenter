@@ -30,7 +30,7 @@
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="*" />
-                    <DataGridTextColumn Header="Цена" Binding="{Binding Cost}" Width="*" />
+                    <DataGridTextColumn Header="Цена" Binding="{Binding FinalCost}" Width="*" />
                     <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>

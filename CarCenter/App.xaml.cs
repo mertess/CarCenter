@@ -24,6 +24,7 @@ namespace CarCenter
             container.RegisterType<ICarLogic, CarLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IKitLogic, KitLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IStorageLogic, StorageLogic>(new HierarchicalLifetimeManager());
+            container.RegisterType<IBuiltCarLogic, BuiltCarLogic>(new HierarchicalLifetimeManager());
             container.Resolve<MainWindow>().Show();
         }
     }

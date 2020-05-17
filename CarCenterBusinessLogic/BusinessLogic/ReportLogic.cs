@@ -14,12 +14,14 @@ namespace CarCenterBusinessLogic.BusinessLogic
     {
         private readonly IReportHelper reportHelper;
         private readonly IKitLogic kitLogic;
+        private readonly IBuiltCarLogic builtCarLogic;
         private readonly ICarLogic carLogic;
 
-        public ReportLogic(IReportHelper reportHelper, IKitLogic kitLogic, ICarLogic carLogic)
+        public ReportLogic(IReportHelper reportHelper, IKitLogic kitLogic, IBuiltCarLogic builtCarLogic, ICarLogic carLogic)
         {
             this.reportHelper = reportHelper;
             this.kitLogic = kitLogic;
+            this.builtCarLogic = builtCarLogic;
             this.carLogic = carLogic;
         }
 
@@ -56,16 +58,17 @@ namespace CarCenterBusinessLogic.BusinessLogic
         {
             var result = new List<ReportSoldCarViewModel>();
             var kits = kitLogic.Read(null);
-            foreach(var c in carLogic.Read(null).Where(c => c.SoldDate.HasValue))
+            var cars = carLogic.Read(null);
+            foreach(var c in builtCarLogic.Read(null).Where(c => c.SoldDate.HasValue))
             {
                 result.Add(new ReportSoldCarViewModel()
                 {
                     CarName = c.CarName,
-                    CarCost = c.Cost,
+                    CarCost = cars.FirstOrDefault(cl => cl.CarName == c.CarName).Cost,
                     SoldDate = c.SoldDate.Value,
                     CarKits = c.CarKits.ToDictionary(
                         key => key.Key,
-                        value => (kits.FirstOrDefault(k => k.KitName == value.Key).KitCost, value.Value.Item1))
+                        value => (kits.FirstOrDefault(k => k.KitName == value.Key).KitCost, value.Value))
                 });
             }
             return result;

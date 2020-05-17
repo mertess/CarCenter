@@ -1,6 +1,7 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +24,12 @@ namespace CarCenter
     public partial class MainWindow : Window
     {
         private readonly IUnityContainer container;
-        private readonly ICarLogic carLogic;
+        private readonly IBuiltCarLogic builtCarLogic;
 
-        public MainWindow(IUnityContainer container, ICarLogic carLogic)
+        public MainWindow(IUnityContainer container, IBuiltCarLogic builtCarLogic)
         {
             InitializeComponent();
-            this.carLogic = carLogic;
+            this.builtCarLogic = builtCarLogic;
             this.container = container;
             Load_Data();
         }
@@ -37,7 +38,7 @@ namespace CarCenter
         {
             try
             {
-                DataGridCars.ItemsSource = carLogic.Read(null);
+                DataGridCars.ItemsSource = builtCarLogic.Read(null);
             }
             catch (Exception)
             {
@@ -82,6 +83,7 @@ namespace CarCenter
             var window = container.Resolve<StoragesWindow>();
             window.ShowDialog();
         }
+
         private void Click_CarsMenuItem(object sender, EventArgs args)
         {
             var window = container.Resolve<CarsWindow>();

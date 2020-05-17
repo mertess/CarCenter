@@ -11,8 +11,8 @@ namespace CarCenterImplementation.Models
         public DateTime InstallationDate { set; get; }
         public int KitCount { set; get; }
         public int KitId { set; get; }
-        public int CarId { set; get; }
+        public int BuiltCarId { set; get; }
         public virtual Kit Kit { set; get; }
-        public virtual Car Car { set; get; }
+        public virtual BuiltCar Car { set; get; }
     }
 }

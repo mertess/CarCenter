@@ -12,7 +12,6 @@ namespace CarCenterImplementation.Implements
 {
     public class CarLogic : ICarLogic
     {
-        //Добавить обновление данных по связанным комплектациям
         public void CreateOrUpdate(CarBindingModel model)
         {
             using (DatabaseContext context = new DatabaseContext())
@@ -32,12 +31,10 @@ namespace CarCenterImplementation.Implements
                 }
                 car.CarName = model.CarName;
                 car.Cost = model.Cost;
-                car.SoldDate = model.SoldDate;
                 context.SaveChanges();
             }
         }
 
-        //Добавить удаление связанных комплектаций 
         public void Delete(CarViewModel model)
         {
             using(DatabaseContext context = new DatabaseContext())
@@ -50,23 +47,17 @@ namespace CarCenterImplementation.Implements
             }
         }
 
-        //подгрузка связанных комплектаций в модель
         public List<CarViewModel> Read(CarBindingModel model)
         {
             using (DatabaseContext context = new DatabaseContext())
             {
                 return context.Cars.Where(c => model == null || model.Id.HasValue && c.Id == model.Id.Value)
-                    .Include(c => c.CarKits)
                     .ToList()
                     .Select(c => new CarViewModel()
                     {
                         Id = c.Id,
                         CarName = c.CarName,
-                        Cost = c.Cost,
-                        SoldDate = c.SoldDate,
-                        CarKits = c.CarKits.ToDictionary(
-                            key => context.Kits.FirstOrDefault(k => k.Id == key.KitId).KitName,
-                            value => (value.KitCount, value.InstallationDate))
+                        Cost = c.Cost
                     })
                     .ToList();
             }
