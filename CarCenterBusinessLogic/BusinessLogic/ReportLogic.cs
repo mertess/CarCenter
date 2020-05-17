@@ -67,8 +67,8 @@ namespace CarCenterBusinessLogic.BusinessLogic
                     CarCost = cars.FirstOrDefault(cl => cl.CarName == c.CarName).Cost,
                     SoldDate = c.SoldDate.Value,
                     CarKits = c.CarKits.ToDictionary(
-                        key => key.Key,
-                        value => (kits.FirstOrDefault(k => k.KitName == value.Key).KitCost, value.Value))
+                        key => key.KitName,
+                        value => (kits.FirstOrDefault(k => k.KitName == value.KitName).KitCost, value.Count))
                 });
             }
             return result;

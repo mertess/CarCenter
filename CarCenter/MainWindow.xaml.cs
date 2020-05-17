@@ -1,4 +1,5 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
+using CarCenterBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,16 +58,33 @@ namespace CarCenter
 
         private void ButtonEdit_Click(object sender, EventArgs args)
         {
-            var window = container.Resolve<BuildingCarWindow>();
-            if(DataGridCars.SelectedItems.Count == 1)
+            try
             {
-                window.ShowDialog();
+                if (DataGridCars.SelectedItems.Count == 1)
+                {
+                    var window = container.Resolve<BuildingCarWindow>();
+                    window.DataContext = DataGridCars.SelectedItem as BuiltCarViewModel;
+                    if (window.ShowDialog().Value)
+                    {
+                        Load_Data();
+                    }
+                }
+            }catch(Exception ex)
+            {
+                //...
             }
         }
 
         private void ButtonDelete_Click(object sender, EventArgs args)
         {
-            if (DataGridCars.SelectedItems.Count == 1)
+            try
+            {
+                if (DataGridCars.SelectedItems.Count == 1)
+                {
+                    builtCarLogic.Delete(DataGridCars.SelectedItem as BuiltCarViewModel);
+                    Load_Data();
+                }
+            }catch(Exception ex)
             {
                 //...
             }

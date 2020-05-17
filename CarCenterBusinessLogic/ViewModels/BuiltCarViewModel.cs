@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarCenterBusinessLogic.HelperModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,6 @@ namespace CarCenterBusinessLogic.ViewModels
         public string CarName { set; get; }
         public int FinalCost { set; get; }
         public DateTime? SoldDate { set; get; }
-        public Dictionary<string, int> CarKits { set; get; }
+        public List<InstalledCarKit> CarKits { set; get; }
     }
 }

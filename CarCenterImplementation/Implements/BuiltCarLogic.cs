@@ -5,9 +5,9 @@ using System.Linq;
 using CarCenterBusinessLogic.Interfaces;
 using CarCenterBusinessLogic.BindingModels;
 using CarCenterBusinessLogic.ViewModels;
+using CarCenterBusinessLogic.HelperModels;
 using CarCenterImplementation.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CarCenterImplementation.Implements
 {
@@ -30,9 +30,9 @@ namespace CarCenterImplementation.Implements
                             {
                                 context.CarKits.Add(new CarKit()
                                 {
-                                    KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.Key).Id,
+                                    KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
                                     BuiltCarId = context.BuiltCars.Count() - 1,
-                                    KitCount = kit.Value,
+                                    KitCount = kit.Count,
                                     InstallationDate = DateTime.Now
                                 });
                                 context.SaveChanges();
@@ -45,15 +45,16 @@ namespace CarCenterImplementation.Implements
                             var kits = context.CarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
                             foreach (var kit in kits)
                             {
-                                if (!model.CarKits.ContainsKey(kit.Kit.KitName))
+                                var carkit = model.CarKits.FirstOrDefault(ck => ck.KitName == kit.Kit.KitName);
+                                if (carkit == null)
                                 {
                                     context.CarKits.Remove(kit);
                                     context.SaveChanges();
                                 }
                                 else
                                 {
-                                    kit.KitCount = model.CarKits[kit.Kit.KitName];
-                                    model.CarKits.Remove(kit.Kit.KitName);
+                                    kit.KitCount = carkit.Count;
+                                    model.CarKits.Remove(carkit);
                                     context.SaveChanges();
                                 }
                             }
@@ -63,8 +64,8 @@ namespace CarCenterImplementation.Implements
                                 context.CarKits.Add(new CarKit()
                                 {
                                     BuiltCarId = model.Id.Value,
-                                    KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.Key).Id,
-                                    KitCount = kit.Value,
+                                    KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
+                                    KitCount = kit.Count,
                                     InstallationDate = DateTime.Now
                                 });
                                 context.SaveChanges();
@@ -121,7 +122,12 @@ namespace CarCenterImplementation.Implements
                         CarName = bc.Car.CarName,
                         SoldDate = bc.SoldDate,
                         CarKits = context.CarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == bc.Id)
-                        .ToDictionary(key => key.Kit.KitName, Value => Value.KitCount)
+                        .Select(ck => new InstalledCarKit()
+                        {
+                            KitName = ck.Kit.KitName,
+                            Count = ck.KitCount,
+                            InstallationDate = ck.InstallationDate
+                        }).ToList()
                     })
                     .ToList();
             }

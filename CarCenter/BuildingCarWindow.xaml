@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d"
-        Title="Сборка машины" Height="300" Width="500">
+        Title="Сборка машины" Height="300" Width="500" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -18,14 +18,20 @@
         <GroupBox Grid.Row="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <Label Margin="5 5 5 5">Выберите машину:</Label>
-                <ComboBox Margin="5 5 5 5" Width="150"/>
+                <ComboBox x:Name="CarComboBox" Margin="5 5 5 5" Width="150" SelectedIndex="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CarName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Устанавливаемые комплектации">
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridCarKits">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Комплектация" Width="*" Binding="{Binding KitName}"/>
-                    <DataGridTextColumn Header="Количество" Width="*" Binding="{Binding KitCount}"/>
+                    <DataGridTextColumn Header="Комплектация" Width="Auto" Binding="{Binding KitName}"/>
+                    <DataGridTextColumn Header="Количество" Width="*" Binding="{Binding Count}"/>
                     <DataGridTextColumn Header="Дата установки" Width="*" Binding="{Binding InstallationDate}"/>
                 </DataGrid.Columns>
             </DataGrid>

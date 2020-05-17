@@ -22,20 +22,22 @@
                Margin="5 20 5 5"
                HorizontalAlignment="Right"
                >Выберите комплектацию:</Label>
-        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+        <ComboBox x:Name ="AddKitComboBox" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
                   Margin="0 25 5 5" Width ="200"/>
         <Label Grid.Row="1" Grid.ColumnSpan="1"
                Margin="5 5 5 5"
                HorizontalAlignment="Right"
                >Количество:</Label>
-        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3"
+        <TextBox Name ="KitCountTextBox" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3"
                   Margin="0 5 5 5" Width ="200"/>
         <Button x:Name="buttonCancel"
                 Grid.Row="3" Grid.Column="2"
-                Margin="5 5 5 5" Width="100" Height="25">Назад</Button>
+                Margin="5 5 5 5" Width="100" Height="25"
+                Click="buttonCancel_Click">Назад</Button>
         <Button x:Name="buttonAccept"
                 Grid.Row="3" Grid.Column="3"
                 Margin="5 5 20 5" Width="100" Height="25"
+                Click="buttonAccept_Click"
                 >Принять</Button>
     </Grid>
 </Window>
