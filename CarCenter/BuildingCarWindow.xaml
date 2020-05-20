@@ -9,7 +9,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -43,5 +44,9 @@
                 <Button x:Name="ButtonDeleteKit" Margin="5 5 5 5" Click="ButtonDeleteKit_Click">Удалить</Button>
             </StackPanel>
         </GroupBox>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="ButtonCancel" Margin="5 5 5 5" Click="ButtonCancel_Click">Отмена</Button>
+            <Button x:Name="ButtonAccept" Margin="5 5 5 5" Click="ButtonAccept_Click">Сохранить</Button>
+        </StackPanel>
     </Grid>
 </Window>

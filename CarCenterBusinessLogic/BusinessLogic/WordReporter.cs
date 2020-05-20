@@ -32,7 +32,7 @@ namespace CarCenterBusinessLogic.BusinessLogic
 
                 Table table = docBody.AppendChild(new Table());
                 table.AppendChild(CreateTableProperties());
-/*
+                /*
                 foreach (var storage in info.Storages)
                 {
                     table.AppendChild(new TableRow(new TableCell(CreateParagraph(new WordParagraph

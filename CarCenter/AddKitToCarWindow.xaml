@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d"
-        Title="Добавление комплектации" Height="170" Width="420">
+        Title="Добавление комплектации" Height="170" Width="420"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,7 +24,7 @@
                HorizontalAlignment="Right"
                >Выберите комплектацию:</Label>
         <ComboBox x:Name ="AddKitComboBox" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
-                  Margin="0 25 5 5" Width ="200"/>
+                  Margin="0 25 5 5" Width ="200" DisplayMemberPath="KitName"/>
         <Label Grid.Row="1" Grid.ColumnSpan="1"
                Margin="5 5 5 5"
                HorizontalAlignment="Right"

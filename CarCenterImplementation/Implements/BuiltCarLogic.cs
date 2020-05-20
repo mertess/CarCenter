@@ -8,6 +8,7 @@ using CarCenterBusinessLogic.ViewModels;
 using CarCenterBusinessLogic.HelperModels;
 using CarCenterImplementation.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace CarCenterImplementation.Implements
 {
@@ -23,15 +24,17 @@ namespace CarCenterImplementation.Implements
                         BuiltCar car;
                         if (!model.Id.HasValue)
                         {
-                            car = new BuiltCar();
+                            car = new BuiltCar() { CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id };
                             context.BuiltCars.Add(car);
                             context.SaveChanges();
+                            var newBuiltCarId = context.BuiltCars.Include(bc => bc.Car)
+                                .FirstOrDefault(bc => bc.Car.CarName == model.CarName).Id;
                             foreach (var kit in model.CarKits)
                             {
                                 context.CarKits.Add(new CarKit()
                                 {
                                     KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
-                                    BuiltCarId = context.BuiltCars.Count() - 1,
+                                    BuiltCarId = newBuiltCarId,
                                     KitCount = kit.Count,
                                     InstallationDate = DateTime.Now
                                 });
@@ -41,6 +44,7 @@ namespace CarCenterImplementation.Implements
                         else
                         {
                             car = context.BuiltCars.FirstOrDefault(bc => bc.Id == model.Id.Value);
+                            car.CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id;
                             //удаляем те, которых нет в модели
                             var kits = context.CarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
                             foreach (var kit in kits)
@@ -72,7 +76,6 @@ namespace CarCenterImplementation.Implements
                             }
                         }
                         car.SoldDate = model.SoldDate;
-                        car.CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id;
                         context.SaveChanges();
                         transaction.Commit();
                     }catch(Exception ex)
@@ -107,7 +110,8 @@ namespace CarCenterImplementation.Implements
                 }
             }
         }
-
+        
+        //добавить расчет финальной цены, скорее всего лучше обновить модель, и хранить информацию в бд 
         public List<BuiltCarViewModel> Read(BuiltCarBindingModel model)
         {
             using(DatabaseContext context = new DatabaseContext())

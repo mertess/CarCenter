@@ -17,6 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Unity;
+using System.Collections.ObjectModel;
+using CarCenterImplementation.Models;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace CarCenter
 {
@@ -28,27 +31,21 @@ namespace CarCenter
         private readonly IUnityContainer container;
         private readonly ICarLogic carLogic;
         private readonly IBuiltCarLogic builtCarLogic;
-        public List<InstalledCarKit> InstalledCarKits { set; get; }
+        private readonly IKitLogic kitLogic;
 
-        public BuildingCarWindow(IUnityContainer container, ICarLogic carLogic, IBuiltCarLogic builtCarLogic)
+        public ObservableCollection<InstalledCarKit> InstalledCarKits { set; get; }
+
+        public BuildingCarWindow(
+            IUnityContainer container,
+            ICarLogic carLogic,
+            IBuiltCarLogic builtCarLogic,
+            IKitLogic kitLogic)
         {
             InitializeComponent();
             this.container = container;
             this.carLogic = carLogic;
             this.builtCarLogic = builtCarLogic;
-            Load_Data();
-        }
-
-        private void Load_Data()
-        {
-            try
-            {
-                CarComboBox.ItemsSource = carLogic.Read(null);
-            }
-            catch(Exception ex)
-            {
-
-            }
+            this.kitLogic = kitLogic;
         }
 
         private void ButtonAddKit_Click(object sender, RoutedEventArgs e)
@@ -56,8 +53,14 @@ namespace CarCenter
             var window = container.Resolve<AddKitToCarWindow>();
             if (window.ShowDialog().Value)
             {
-                this.InstalledCarKits.Add(window.InstalledCarKit);
-                Load_Data();
+                var kit = InstalledCarKits.FirstOrDefault(k => k.KitName == window.InstalledCarKit.KitName);
+                if (kit != null)
+                {
+                    kit.Count = window.InstalledCarKit.Count;
+                    kit.InstallationDate = window.InstalledCarKit.InstallationDate;
+                }
+                else
+                    this.InstalledCarKits.Add(window.InstalledCarKit);
             }
         }
 
@@ -67,10 +70,7 @@ namespace CarCenter
             {
                 var window = container.Resolve<AddKitToCarWindow>();
                 window.InstalledCarKit = DataGridCarKits.SelectedItem as InstalledCarKit;
-                if (window.ShowDialog().Value)
-                {
-
-                }
+                window.ShowDialog();
             }
         }
 
@@ -78,20 +78,75 @@ namespace CarCenter
         {
             if(DataGridCarKits.SelectedItems.Count == 1)
             {
-                //...
+                InstalledCarKits.Remove(InstalledCarKits
+                    .FirstOrDefault(ck => ck.KitName == (DataGridCarKits.SelectedItem as InstalledCarKit).KitName));
             }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //I HATE ME LIFE 
-            if (DataContext == null)
-                Debug.WriteLine("!!!!");
-            this.InstalledCarKits = builtCarLogic.Read(new BuiltCarBindingModel()
-            {  
-                Id = (DataContext as BuiltCarViewModel).Id
-            })?[0].CarKits;
-            DataGridCarKits.ItemsSource = InstalledCarKits;
+            try
+            {
+                var cars = carLogic.Read(null);
+                this.CarComboBox.ItemsSource = cars;
+                if (DataContext != null)
+                {
+                    this.CarComboBox.SelectedItem = cars
+                        .FirstOrDefault(c => c.CarName == (DataContext as BuiltCarViewModel).CarName);
+                    this.InstalledCarKits = new ObservableCollection<InstalledCarKit>((DataContext as BuiltCarViewModel).CarKits);
+                }
+                else
+                    InstalledCarKits = new ObservableCollection<InstalledCarKit>();
+                DataGridCarKits.ItemsSource = InstalledCarKits;
+            }
+            catch(Exception ex)
+            {
+                //...
+            }
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
+        }
+
+        private void ButtonAccept_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CarComboBox.SelectedItem != null)
+                {
+                    var kits = kitLogic.Read(null);
+                    if (DataContext != null)
+                    {
+                        builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
+                        {
+                            Id = (DataContext as BuiltCarViewModel).Id,
+                            CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
+                            CarKits = InstalledCarKits.ToList(),
+                            FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
+                                InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                        }) ;
+                    }
+                    else
+                    {
+                        builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
+                        {
+                            CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
+                            CarKits = InstalledCarKits.ToList(),
+                            FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
+                               InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                        });
+                    }
+                    this.DialogResult = true;
+                    this.Close();
+                }
+            }catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.InnerException.Message);
+            }
         }
     }
 }
