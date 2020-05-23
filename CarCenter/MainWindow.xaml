@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
+        xmlns:conv="clr-namespace:CarCenter.utils"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="453.612">
+        Title="MainWindow" Height="450" Width="600">
+    <Window.Resources>
+        <conv:DateTimeDateConverter x:Key="DateConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18*"></RowDefinition>
@@ -31,7 +35,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="*" />
                     <DataGridTextColumn Header="Цена" Binding="{Binding FinalCost}" Width="*" />
-                    <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate}" Width="*" />
+                    <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate, Converter={StaticResource DateConverter}}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>

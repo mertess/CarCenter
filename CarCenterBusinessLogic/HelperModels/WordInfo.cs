@@ -5,13 +5,11 @@ using System.Text;
 
 namespace CarCenterBusinessLogic.HelperModels
 {
-    public class PdfInfo
+    public class WordInfo
     {
         public string FilePath { set; get; }
         public string Title { set; get; }
         public string Body { set; get; }
-        public string DateFrom { set; get; }
-        public string DateTo { set; get; }
-        public List<ReportActionKitsViewModel> ReportActionKits { set; get; }
+        public List<ReportSoldCarViewModel> ReportSoldCars { set; get; }
     }
 }

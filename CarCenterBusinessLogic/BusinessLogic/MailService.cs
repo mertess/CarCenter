@@ -9,23 +9,32 @@ namespace CarCenterBusinessLogic.BusinessLogic
 {
     public static class MailService
     {
-        public static string Login { set; get; }
-        public static string Password { set; get; }
+        private static string SmtpHost { set; get; }
+        private static int SmtpPort { set; get; }
+        private static string Login { set; get; }
+        private static string Password { set; get; }
 
-        public static async void SendDocument<T>(T model) where T : BaseInfo
+        public static void SetConfig(MailConfig mailConfig)
         {
-            using (MailMessage mailMessage = new MailMessage("from", "to"))
+            SmtpHost = mailConfig.SmtpHost;
+            SmtpPort = mailConfig.SmtpPort;
+            Login = mailConfig.Login;
+            Password = mailConfig.Password;
+        }
+
+        public static async void SendDocumentAsync(MailSendInfo info) 
+        {
+            using (MailMessage mailMessage = new MailMessage(Login, info.Email))
             {
-                mailMessage.Subject = model.Title;
-                mailMessage.Body = model.Header;
-                mailMessage.IsBodyHtml = true;
-                //надо еще подумать
-                mailMessage.Attachments.Add(new Attachment(model.Email));
-                SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 25);
-                //TODO: брать почту и пароль из ресурсов 
-                smtp.Credentials = new NetworkCredential("mitya.lagin@yandex.ru", "password");
-                smtp.EnableSsl = true;
-                await smtp.SendMailAsync(mailMessage);
+               using(SmtpClient smtpClient = new SmtpClient(SmtpHost, SmtpPort))
+               {
+                    mailMessage.Subject = info.Title;
+                    mailMessage.Body = info.Body;
+                    mailMessage.Attachments.Add(new Attachment(info.FilePath));
+                    smtpClient.Credentials = new NetworkCredential(Login, Password);
+                    smtpClient.EnableSsl = true;
+                    await smtpClient.SendMailAsync(mailMessage);
+               }
             }
         }
     }

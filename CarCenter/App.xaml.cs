@@ -1,4 +1,6 @@
-﻿using CarCenterBusinessLogic.Interfaces;
+﻿using CarCenterBusinessLogic.BusinessLogic;
+using CarCenterBusinessLogic.HelperModels;
+using CarCenterBusinessLogic.Interfaces;
 using CarCenterImplementation.Implements;
 using System;
 using System.Collections.Generic;
@@ -21,11 +23,24 @@ namespace CarCenter
         {
             base.OnStartup(e);
             IUnityContainer container = new UnityContainer();
+            SettingsContainer(container);
+            MailService.SetConfig(new MailConfig()
+            {
+                Login = "mitya.lagin@yandex.ru",
+                Password = "56321cegawdemalagin2019",
+                SmtpHost = "smtp.yandex.ru",
+                SmtpPort = 25
+            });
+            container.Resolve<MainWindow>().Show();
+        }
+
+        private void SettingsContainer(IUnityContainer container)
+        {
             container.RegisterType<ICarLogic, CarLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IKitLogic, KitLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IStorageLogic, StorageLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IBuiltCarLogic, BuiltCarLogic>(new HierarchicalLifetimeManager());
-            container.Resolve<MainWindow>().Show();
+            container.RegisterType<IReportHelper, ReportHelper>(new HierarchicalLifetimeManager());
         }
     }
 }

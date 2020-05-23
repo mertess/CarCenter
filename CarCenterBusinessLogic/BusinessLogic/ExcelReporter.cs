@@ -14,9 +14,9 @@ namespace CarCenterBusinessLogic.BusinessLogic
 {
     public class ExcelReporter
     {
-        public static void CreateDoc(WordExcelInfo info)
+        public static void CreateDoc(ExcelInfo info)
         {
-            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(info.Email, SpreadsheetDocumentType.Workbook))
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(info.FilePath, SpreadsheetDocumentType.Workbook))
             {
                 // Создаем книгу (в ней хранятся листы)
                 WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
@@ -55,7 +55,7 @@ namespace CarCenterBusinessLogic.BusinessLogic
                 {
                     Worksheet = worksheetPart.Worksheet,
                     CellFromName = "A1",
-                    CellToName = "C1"
+                    CellToName = "F1"
                 });
                 InsertCellInWorksheet(new ExcelCellParameters
                 {
@@ -63,38 +63,20 @@ namespace CarCenterBusinessLogic.BusinessLogic
                     ShareStringPart = shareStringPart,
                     ColumnName = "A",
                     RowIndex = 2,
-                    Text = "Дата",
+                    Text = info.Body,
                     StyleIndex = 0U
                 });
-                InsertCellInWorksheet(new ExcelCellParameters
+                MergeCells(new ExcelMergeParameters
                 {
                     Worksheet = worksheetPart.Worksheet,
-                    ShareStringPart = shareStringPart,
-                    ColumnName = "B",
-                    RowIndex = 2,
-                    Text = "Платье",
-                    StyleIndex = 0U
+                    CellFromName = "A2",
+                    CellToName = "F2"
                 });
-                InsertCellInWorksheet(new ExcelCellParameters
-                {
-                    Worksheet = worksheetPart.Worksheet,
-                    ShareStringPart = shareStringPart,
-                    ColumnName = "C",
-                    RowIndex = 2,
-                    Text = "Сумма заказа",
-                    StyleIndex = 0U
-                });
-                uint rowIndex = 3;
-                /*//собираем информацию по заказам в словарь
-                Dictionary<string, List<ReportOrdersViewModel>> dictOrders = new Dictionary<string, List<ReportOrdersViewModel>>();
-                foreach (var elem in info.Orders)
-                {
-                    if (!dictOrders.ContainsKey(elem.DateCreate.ToShortDateString()))
-                        dictOrders.Add(elem.DateCreate.ToShortDateString(), new List<ReportOrdersViewModel>() { elem });
-                    else
-                        dictOrders[elem.DateCreate.ToShortDateString()].Add(elem);
-                }
-                foreach (var order in dictOrders)
+                //Установка заголовков таблицы
+                CreateTableHeader(worksheetPart, shareStringPart);
+                //Установка строк таблицы
+                uint rowIndex = 4;
+                foreach (var car in info.ReportSoldCars)
                 {
                     InsertCellInWorksheet(new ExcelCellParameters
                     {
@@ -102,41 +84,16 @@ namespace CarCenterBusinessLogic.BusinessLogic
                         ShareStringPart = shareStringPart,
                         ColumnName = "A",
                         RowIndex = rowIndex,
-                        Text = order.Key,
+                        Text = car.SoldDate.ToShortDateString(),
                         StyleIndex = 0U
                     });
-                    rowIndex++;
-                    decimal totalPrice = 0;
-                    foreach (var dress in order.Value)
-                    {
-                        InsertCellInWorksheet(new ExcelCellParameters
-                        {
-                            Worksheet = worksheetPart.Worksheet,
-                            ShareStringPart = shareStringPart,
-                            ColumnName = "B",
-                            RowIndex = rowIndex,
-                            Text = dress.DressName,
-                            StyleIndex = 0U
-                        });
-                        InsertCellInWorksheet(new ExcelCellParameters
-                        {
-                            Worksheet = worksheetPart.Worksheet,
-                            ShareStringPart = shareStringPart,
-                            ColumnName = "C",
-                            RowIndex = rowIndex,
-                            Text = dress.Sum.ToString(),
-                            StyleIndex = 0U
-                        });
-                        totalPrice += dress.Sum;
-                        rowIndex++;
-                    }
                     InsertCellInWorksheet(new ExcelCellParameters
                     {
                         Worksheet = worksheetPart.Worksheet,
                         ShareStringPart = shareStringPart,
-                        ColumnName = "A",
+                        ColumnName = "B",
                         RowIndex = rowIndex,
-                        Text = "Всего",
+                        Text = car.CarName,
                         StyleIndex = 0U
                     });
                     InsertCellInWorksheet(new ExcelCellParameters
@@ -145,13 +102,129 @@ namespace CarCenterBusinessLogic.BusinessLogic
                         ShareStringPart = shareStringPart,
                         ColumnName = "C",
                         RowIndex = rowIndex,
-                        Text = totalPrice.ToString(),
+                        Text = car.CarCost.ToString(),
+                        StyleIndex = 0U
+                    });
+                    InsertCellInWorksheet(new ExcelCellParameters
+                    {
+                        Worksheet = worksheetPart.Worksheet,
+                        ShareStringPart = shareStringPart,
+                        ColumnName = "D",
+                        RowIndex = rowIndex,
+                        Text = car.CarKits.FirstOrDefault().Key,
+                        StyleIndex = 0U
+                    });
+                    InsertCellInWorksheet(new ExcelCellParameters
+                    {
+                        Worksheet = worksheetPart.Worksheet,
+                        ShareStringPart = shareStringPart,
+                        ColumnName = "E",
+                        RowIndex = rowIndex,
+                        Text = car.CarKits.FirstOrDefault().Value.Item1.ToString(),
+                        StyleIndex = 0U
+                    });
+                    InsertCellInWorksheet(new ExcelCellParameters
+                    {
+                        Worksheet = worksheetPart.Worksheet,
+                        ShareStringPart = shareStringPart,
+                        ColumnName = "F",
+                        RowIndex = rowIndex,
+                        Text = car.CarKits.FirstOrDefault().Value.Item2.ToString(),
                         StyleIndex = 0U
                     });
                     rowIndex++;
-                }*/
+                    foreach(var kit in car.CarKits)
+                    {
+                        InsertCellInWorksheet(new ExcelCellParameters
+                        {
+                            Worksheet = worksheetPart.Worksheet,
+                            ShareStringPart = shareStringPart,
+                            ColumnName = "D",
+                            RowIndex = rowIndex,
+                            Text = kit.Key,
+                            StyleIndex = 0U
+                        });
+                        InsertCellInWorksheet(new ExcelCellParameters
+                        {
+                            Worksheet = worksheetPart.Worksheet,
+                            ShareStringPart = shareStringPart,
+                            ColumnName = "E",
+                            RowIndex = rowIndex,
+                            Text = kit.Value.Item1.ToString(),
+                            StyleIndex = 0U
+                        });
+                        InsertCellInWorksheet(new ExcelCellParameters
+                        {
+                            Worksheet = worksheetPart.Worksheet,
+                            ShareStringPart = shareStringPart,
+                            ColumnName = "F",
+                            RowIndex = rowIndex,
+                            Text = kit.Value.Item2.ToString(),
+                            StyleIndex = 0U
+                        });
+                        rowIndex++;
+                    }
+                }
                 workbookpart.Workbook.Save();
             }
+        }
+
+        private static void CreateTableHeader(WorksheetPart worksheetPart, SharedStringTablePart shareStringPart)
+        {
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "A",
+                RowIndex = 3,
+                Text = "Дата продажи",
+                StyleIndex = 0U
+            });
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "B",
+                RowIndex = 3,
+                Text = "Машина",
+                StyleIndex = 0U
+            });
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "C",
+                RowIndex = 3,
+                Text = "Стоимость машины",
+                StyleIndex = 0U
+            });
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "D",
+                RowIndex = 3,
+                Text = "Комплектация",
+                StyleIndex = 0U
+            });
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "E",
+                RowIndex = 3,
+                Text = "Стоимость за шт.",
+                StyleIndex = 0U
+            });
+            InsertCellInWorksheet(new ExcelCellParameters
+            {
+                Worksheet = worksheetPart.Worksheet,
+                ShareStringPart = shareStringPart,
+                ColumnName = "F",
+                RowIndex = 3,
+                Text = "Количество",
+                StyleIndex = 0U
+            });
         }
 
         // Настройка стилей для файла

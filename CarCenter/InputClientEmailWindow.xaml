@@ -1,0 +1,19 @@
+﻿<Window x:Class="CarCenter.InputClientEmailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarCenter"
+        mc:Ignorable="d"
+        Title="Ввод электронной почты" Height="150" Width="325">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Почтовый адрес: "/>
+                <TextBox x:Name="EmailPdfTextBox" Width="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="ButtonCancel" Width="70" Content="Отмена" Margin="5 20 5 5" Click="ButtonCancel_Click"/>
+                <Button x:Name="ButtonSendPdf" Width="70" Content="Отправить" Margin="10 20 0 5" Click="ButtonSendPdf_Click"/>
+            </StackPanel>
+        </StackPanel>
+</Window>

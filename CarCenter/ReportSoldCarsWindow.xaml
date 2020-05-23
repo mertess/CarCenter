@@ -1,0 +1,33 @@
+﻿<Window x:Class="CarCenter.ReportSoldCarsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarCenter"
+        mc:Ignorable="d"
+        Title="Отчет по проданным машинам" Height="150" Width="330">
+    <TabControl x:Name="ReportSoldCarsTabControl">
+        <TabItem x:Name="DocTabItem" Header="Отчет в формате doc">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Почтовый адрес: "/>
+                    <TextBox x:Name="EmailDocTextBox" Width="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="ButtonSendDoc" Content="Отправить" Margin="5 5 5 5" Click="ButtonSendDoc_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="ExcelTabItem" Header="Отчет в формате xlsx">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Почтовый адрес: "/>
+                    <TextBox x:Name="EmailExcelTextBox" Width="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="ButtonSendXls" Content="Отправить" Margin="5 5 5 5" Click="ButtonSendXls_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>

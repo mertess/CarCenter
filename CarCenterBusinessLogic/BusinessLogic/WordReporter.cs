@@ -6,15 +6,17 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using CarCenterBusinessLogic.HelperModels;
 using CarCenterBusinessLogic.ViewModels;
-
+using System.Linq;
+using System.Diagnostics;
+using DocumentFormat.OpenXml.Office.CustomUI;
 
 namespace CarCenterBusinessLogic.BusinessLogic
 {
     public class WordReporter
-    {   
-        public static void CreateDoc(WordExcelInfo info)
+    {
+        public static void CreateDoc(WordInfo info)
         {
-            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(info.Email, WordprocessingDocumentType.Document))
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(info.FilePath, WordprocessingDocumentType.Document))
             {
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
                 mainPart.Document = new Document();
@@ -29,26 +31,201 @@ namespace CarCenterBusinessLogic.BusinessLogic
                         JustificationValues = JustificationValues.Center
                     }
                 }));
-
+                docBody.AppendChild(CreateParagraph(new WordParagraph
+                {
+                    Texts = new List<string> { info.Body },
+                    TextProperties = new WordParagraphProperties
+                    {
+                        Bold = false,
+                        Size = "24",
+                        JustificationValues = JustificationValues.Center
+                    }
+                }));
                 Table table = docBody.AppendChild(new Table());
                 table.AppendChild(CreateTableProperties());
-                /*
-                foreach (var storage in info.Storages)
+                table.AppendChild(CreateHeaderRow());
+                foreach (var sc in info.ReportSoldCars)
                 {
-                    table.AppendChild(new TableRow(new TableCell(CreateParagraph(new WordParagraph
+                    TableRow tableRow = new TableRow();
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
                     {
-                        Texts = new List<string> { storage.StorageName },
+                        Texts = new List<string> { sc.SoldDate.ToShortDateString() },
                         TextProperties = new WordParagraphProperties
                         {
                             Bold = false,
                             Size = "24",
                             JustificationValues = JustificationValues.Center
                         }
-                    }))));
-                }*/
+                    })));
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { sc.CarName },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Bold = false,
+                            Size = "24",
+                            JustificationValues = JustificationValues.Center
+                        }
+                    })));
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { sc.CarCost.ToString() },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Bold = false,
+                            Size = "24",
+                            JustificationValues = JustificationValues.Center
+                        }
+                    })));
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { sc.CarKits.Keys.FirstOrDefault() },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Bold = false,
+                            Size = "24",
+                            JustificationValues = JustificationValues.Center
+                        }
+                    })));
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { sc.CarKits.Values.FirstOrDefault().Item1.ToString() },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Bold = false,
+                            Size = "24",
+                            JustificationValues = JustificationValues.Center
+                        }
+                    })));
+                    tableRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { sc.CarKits.Values.FirstOrDefault().Item2.ToString() },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Bold = false,
+                            Size = "24",
+                            JustificationValues = JustificationValues.Center
+                        }
+                    })));
+                    table.AppendChild(tableRow);
+                    foreach (var kit in sc.CarKits.Skip(1))
+                    {
+                        TableRow kitRow = new TableRow();
+                        for (int i = 0; i < 3; i++)
+                            kitRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                            {
+                                Texts = new List<string> { "" },
+                                TextProperties = new WordParagraphProperties
+                                {
+                                    Bold = false,
+                                    Size = "24",
+                                    JustificationValues = JustificationValues.Center
+                                }
+                            })));
+
+                        kitRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                        {
+                            Texts = new List<string> { kit.Key },
+                            TextProperties = new WordParagraphProperties
+                            {
+                                Bold = false,
+                                Size = "24",
+                                JustificationValues = JustificationValues.Center
+                            }
+                        })));
+                        kitRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                        {
+                            Texts = new List<string> { kit.Value.Item1.ToString() },
+                            TextProperties = new WordParagraphProperties
+                            {
+                                Bold = false,
+                                Size = "24",
+                                JustificationValues = JustificationValues.Center
+                            }
+                        })));
+                        kitRow.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+                        {
+                            Texts = new List<string> { kit.Value.Item2.ToString() },
+                            TextProperties = new WordParagraphProperties
+                            {
+                                Bold = false,
+                                Size = "24",
+                                JustificationValues = JustificationValues.Center
+                            }
+                        })));
+                        table.AppendChild(kitRow);
+                    }
+                }
                 docBody.AppendChild(CreateSectionProperties());
                 wordDocument.MainDocumentPart.Document.Save();
             }
+        }
+
+        private static TableRow CreateHeaderRow()
+        {
+            TableRow tableRowHeader = new TableRow();
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Дата" },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Машина" },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Стоимость машины" },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Комплектация" },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Стоимость за шт." },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+            tableRowHeader.AppendChild(new TableCell(CreateParagraph(new WordParagraph
+            {
+                Texts = new List<string> { "Количество" },
+                TextProperties = new WordParagraphProperties
+                {
+                    Bold = false,
+                    Size = "24",
+                    JustificationValues = JustificationValues.Center
+                }
+            })));
+
+            return tableRowHeader;
         }
 
         //Настройка границ таблицы
@@ -76,6 +253,16 @@ namespace CarCenterBusinessLogic.BusinessLogic
             leftBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
             leftBorder.Color = "CC0000";
             tblBorders.AppendChild(leftBorder);
+
+            InsideHorizontalBorder insideHBorder = new InsideHorizontalBorder();
+            insideHBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
+            insideHBorder.Color = "CC0000";
+            tblBorders.AppendChild(insideHBorder);
+
+            InsideVerticalBorder insideVBorder = new InsideVerticalBorder();
+            insideVBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
+            insideVBorder.Color = "CC0000";
+            tblBorders.AppendChild(insideVBorder);
 
             tblProperties.AppendChild(tblBorders);
 
@@ -111,8 +298,8 @@ namespace CarCenterBusinessLogic.BusinessLogic
                         {
                             Val = paragraph.TextProperties.Size
                         });
-                        if (i == 0)
-                            properties.AppendChild(new Bold());
+                        if (paragraph.TextProperties.Bold == true)
+                            properties.Bold = new Bold();
                         docRun.AppendChild(properties);
                         docRun.AppendChild(new Text
                         {

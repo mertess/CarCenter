@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using CarCenterBusinessLogic.BindingModels;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using CarCenterBusinessLogic.HelperModels;
+using System.Diagnostics;
 
 namespace CarCenterBusinessLogic.BusinessLogic
 {
@@ -16,6 +18,9 @@ namespace CarCenterBusinessLogic.BusinessLogic
         private readonly IKitLogic kitLogic;
         private readonly IBuiltCarLogic builtCarLogic;
         private readonly ICarLogic carLogic;
+        private readonly string TmpWordFilePath = $@"{AppContext.BaseDirectory}\TmpWordReport.docx";
+        private readonly string TmpExcelFilePath = $@"{AppContext.BaseDirectory}\TmpExcelReport.xlsx";
+        private readonly string TmpPdfFilePath = $@"{AppContext.BaseDirectory}\TmpPdfReport.PDF";
 
         public ReportLogic(IReportHelper reportHelper, IKitLogic kitLogic, IBuiltCarLogic builtCarLogic, ICarLogic carLogic)
         {
@@ -72,6 +77,88 @@ namespace CarCenterBusinessLogic.BusinessLogic
                 });
             }
             return result;
+        }
+
+        public void SendWordReport(string Email)
+        {
+            try
+            {
+                WordReporter.CreateDoc(new WordInfo()
+                {
+                    FilePath = TmpWordFilePath,
+                    Title = "Автоцентр \"Корыто\"",
+                    Body = "Проданные машины с установленными комплектациями:",
+                    ReportSoldCars = GetReportSoldCars()
+                });
+                MailService.SendDocumentAsync(new MailSendInfo()
+                {
+                    FilePath = TmpWordFilePath,
+                    Title = "Автоцентр \"Корыто\" Отчет Word",
+                    Body = "Проданные машины с установленными комплектациями",
+                    Email = Email
+                });
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public void SendExcelReport(string Email)
+        {
+            try
+            {
+                ExcelReporter.CreateDoc(new ExcelInfo()
+                {
+                    FilePath = TmpExcelFilePath,
+                    Title = "Автоцентр \"Корыто\"",
+                    Body = "Проданные машины с установленными комплектациями:",
+                    ReportSoldCars = GetReportSoldCars()
+                });
+                MailService.SendDocumentAsync(new MailSendInfo()
+                {
+                    FilePath = TmpExcelFilePath,
+                    Title = "Автоцентр \"Корыто\" Отчет Excel",
+                    Body = "Проданные машины с установленными комплектациями",
+                    Email = Email
+                });
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public void SendPdfReport(string Email, DateTime DateFrom, DateTime DateTo)
+        {
+            try
+            {
+                PdfReporter.CreateDoc(new PdfInfo()
+                {
+                    FilePath = TmpPdfFilePath,
+                    DateFrom = DateFrom.ToShortDateString(),
+                    DateTo = DateTo.ToShortDateString(),
+                    Title = "Автоцентр \"Корыто\"",
+                    Body = "Отчет по движению комплектаций",
+                    ReportActionKits = GetReportActionKits(new KitReportPeriodBindingModel()
+                    {
+                        DateFrom = DateFrom,
+                        DateTo = DateTo,
+                    })
+                });
+                MailService.SendDocumentAsync(new MailSendInfo()
+                {
+                    FilePath = TmpPdfFilePath,
+                    Title = "Автоцентр \"Корыто\" Отчет Pdf",
+                    Body = "Отчет по движению комплектаций",
+                    Email = Email
+                });
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

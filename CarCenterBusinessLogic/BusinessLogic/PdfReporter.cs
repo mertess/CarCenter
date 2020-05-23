@@ -15,13 +15,22 @@ namespace CarCenterBusinessLogic.BusinessLogic
             Document document = new Document();
             DefineStyles(document);
             Section section = document.AddSection();
-            Paragraph paragraph = section.AddParagraph(info.Title);
-            paragraph.Format.SpaceAfter = "1cm";
-            paragraph.Format.Alignment = ParagraphAlignment.Center;
-            paragraph.Style = "Normal";
+            Paragraph paragraphTitle = section.AddParagraph();
+            paragraphTitle.AddFormattedText(info.Title, TextFormat.Bold);
+            paragraphTitle.Format.SpaceAfter = "1cm";
+            paragraphTitle.Format.Alignment = ParagraphAlignment.Center;
+            Paragraph paragraphBody = section.AddParagraph(info.Body);
+            paragraphBody.Format.SpaceAfter = "1cm";
+            paragraphBody.Format.Alignment = ParagraphAlignment.Center;
+            paragraphBody.Style = "Normal";
+            Paragraph paragraphPeriod = section.AddParagraph($"Период с {info.DateFrom} по {info.DateTo}");
+            paragraphPeriod.Format.SpaceAfter = "1cm";
+            paragraphPeriod.Format.Alignment = ParagraphAlignment.Left;
+            paragraphPeriod.Style = "Normal";
+
             var table = document.LastSection.AddTable();
             table.Format.Alignment = ParagraphAlignment.Center;
-            List<string> columns = new List<string> { "3cm", "3cm", "3cm" };
+            List<string> columns = new List<string> { "3cm", "4cm", "3cm", "3cm", "3cm" };
             foreach (var elem in columns)
             {
                 table.AddColumn(elem);
@@ -29,26 +38,27 @@ namespace CarCenterBusinessLogic.BusinessLogic
             CreateRow(new PdfRowParameters
             {
                 Table = table,
-                Texts = new List<string> { "Платье", "Материал", "Количество"},
+                Texts = new List<string> { "Дата", "Комплектация", "Стоимость за шт.", "Действие", "Количество"},
                 Style = "NormalTitle",
                 ParagraphAlignment = ParagraphAlignment.Center
             });
-            /*foreach (var dress in info.Dresses)
+            foreach (var kit in info.ReportActionKits)
             {
                 CreateRow(new PdfRowParameters
                 {
                     Table = table,
-                    Texts = new List<string> { dress.DressName, dress.MaterialName, dress.MaterialCount.ToString()},
+                    Texts = new List<string> { kit.DateAction.ToShortDateString(), kit.KitName,
+                        kit.KitCost.ToString(), kit.Action, kit.KitCount.ToString() },
                     Style = "Normal",
                     ParagraphAlignment = ParagraphAlignment.Left
                 });
-            }*/
+            }
             PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always)
             {
                 Document = document
             };
             renderer.RenderDocument();
-            renderer.PdfDocument.Save(info.Email);
+            renderer.PdfDocument.Save(info.FilePath);
         }
 
         // Создание стилей для документа

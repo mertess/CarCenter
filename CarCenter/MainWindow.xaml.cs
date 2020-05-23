@@ -110,13 +110,26 @@ namespace CarCenter
 
         private void Click_ReportSoldCarsMenuItem(object sender, EventArgs args)
         {
-            /*var window = container.Resolve<Window>();
-            window.ShowDialog();*/
+            try
+            {
+                var window = container.Resolve<ReportSoldCarsWindow>();
+                window.Show();
+            }catch(Exception ex)
+            {
+                //...
+            }
         }
 
         private void Click_ReportKitsMovingMenuItem(object sender, EventArgs args)
         {
-            //...
+            try
+            {
+                var window = container.Resolve<ReportKitsMovingWindow>();
+                window.Show();
+            }catch(Exception ex)
+            {
+                //...
+            }
         }
     }
 }
