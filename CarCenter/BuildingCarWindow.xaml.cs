@@ -20,6 +20,7 @@ using Unity;
 using System.Collections.ObjectModel;
 using CarCenterImplementation.Models;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using NLog;
 
 namespace CarCenter
 {
@@ -32,6 +33,8 @@ namespace CarCenter
         private readonly ICarLogic carLogic;
         private readonly IBuiltCarLogic builtCarLogic;
         private readonly IKitLogic kitLogic;
+        private readonly IStorageLogic storageLogic;
+        private readonly Logger logger;
 
         public ObservableCollection<InstalledCarKit> InstalledCarKits { set; get; }
 
@@ -39,13 +42,16 @@ namespace CarCenter
             IUnityContainer container,
             ICarLogic carLogic,
             IBuiltCarLogic builtCarLogic,
-            IKitLogic kitLogic)
+            IKitLogic kitLogic,
+            IStorageLogic storageLogic)
         {
             InitializeComponent();
             this.container = container;
             this.carLogic = carLogic;
             this.builtCarLogic = builtCarLogic;
             this.kitLogic = kitLogic;
+            this.storageLogic = storageLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         private void ButtonAddKit_Click(object sender, RoutedEventArgs e)
@@ -71,7 +77,8 @@ namespace CarCenter
                 var window = container.Resolve<AddKitToCarWindow>();
                 window.InstalledCarKit = DataGridCarKits.SelectedItem as InstalledCarKit;
                 window.ShowDialog();
-            }
+            }else
+                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
         }
 
         private void ButtonDeleteKit_Click(object sender, RoutedEventArgs e)
@@ -81,6 +88,8 @@ namespace CarCenter
                 InstalledCarKits.Remove(InstalledCarKits
                     .FirstOrDefault(ck => ck.KitName == (DataGridCarKits.SelectedItem as InstalledCarKit).KitName));
             }
+            else
+                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -101,7 +110,8 @@ namespace CarCenter
             }
             catch(Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -115,37 +125,36 @@ namespace CarCenter
         {
             try
             {
-                if (CarComboBox.SelectedItem != null)
+                var kits = kitLogic.Read(null);
+                if (DataContext != null)
                 {
-                    var kits = kitLogic.Read(null);
-                    if (DataContext != null)
+                    builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
                     {
-                        builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
-                        {
-                            Id = (DataContext as BuiltCarViewModel).Id,
-                            CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
-                            CarKits = InstalledCarKits.ToList(),
-                            FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
-                                InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
-                        }) ;
-                    }
-                    else
-                    {
-                        builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
-                        {
-                            CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
-                            CarKits = InstalledCarKits.ToList(),
-                            FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
-                               InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
-                        });
-                    }
-                    this.DialogResult = true;
-                    this.Close();
+                        Id = (DataContext as BuiltCarViewModel).Id,
+                        CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
+                        CarKits = InstalledCarKits.ToList(),
+                        FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
+                            InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                    });
+                    storageLogic.RemoveKits(new BuiltCarBindingModel() { CarKits = InstalledCarKits.ToList() });
                 }
+                else
+                {
+                    builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
+                    {
+                        CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
+                        CarKits = InstalledCarKits.ToList(),
+                        FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
+                           InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                    });
+                    storageLogic.RemoveKits(new BuiltCarBindingModel() { CarKits = InstalledCarKits.ToList() });
+                }
+                this.DialogResult = true;
+                this.Close();
             }catch(Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.InnerException.Message);
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
     }

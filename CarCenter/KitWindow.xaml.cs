@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CarCenterBusinessLogic.ViewModels;
+using NLog;
+using System.Text.RegularExpressions;
 
 namespace CarCenter
 {
@@ -23,11 +25,13 @@ namespace CarCenter
     public partial class KitWindow : Window
     {
         private readonly IKitLogic kitLogic;
+        private readonly Logger logger;
 
         public KitWindow(IKitLogic kitLogic)
         {
             InitializeComponent();
             this.kitLogic = kitLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         private void buttonAccept_Click(object sender, RoutedEventArgs e)
@@ -53,13 +57,15 @@ namespace CarCenter
                             Cost = Convert.ToInt32(KitCostTextBox.Text)
                         });
                     }
-                }
-                this.DialogResult = true;
-                this.Close();
+                    this.DialogResult = true;
+                    this.Close();
+                }else
+                    MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 

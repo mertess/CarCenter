@@ -31,12 +31,13 @@ namespace CarCenterImplementation.Implements
                                 .FirstOrDefault(bc => bc.Car.CarName == model.CarName).Id;
                             foreach (var kit in model.CarKits)
                             {
-                                context.CarKits.Add(new CarKit()
+                                context.BuiltCarKits.Add(new BuiltCarKit()
                                 {
                                     KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
                                     BuiltCarId = newBuiltCarId,
                                     KitCount = kit.Count,
-                                    InstallationDate = DateTime.Now
+                                    InstallationDate = DateTime.Now,
+                                    RemovedFromStorages = kit.RemovedFromStorages
                                 });
                                 context.SaveChanges();
                             }
@@ -45,27 +46,35 @@ namespace CarCenterImplementation.Implements
                         {
                             car = context.BuiltCars.FirstOrDefault(bc => bc.Id == model.Id.Value);
                             car.CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id;
-                            //удаляем те, которых нет в модели
-                            var kits = context.CarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
+                            //удаляем те, которых нет в модели, возвращаем на склад
+                            var kits = context.BuiltCarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
                             foreach (var kit in kits)
                             {
                                 var carkit = model.CarKits.FirstOrDefault(ck => ck.KitName == kit.Kit.KitName);
                                 if (carkit == null)
                                 {
-                                    context.CarKits.Remove(kit);
+                                    //возвращаем комплектацию на склад
+                                    context.StorageKits.FirstOrDefault(sk => sk.KitId == kit.KitId).KitCount += kit.KitCount;
+                                    context.BuiltCarKits.Remove(kit);
                                     context.SaveChanges();
                                 }
                                 else
                                 {
+                                    //возвращаем текущее колво комплектации на склад,
+                                    //для правильного расчета вычета данной комплектации со складов
+                                    //в случае редактирования количества данной комплектации
+                                    if(kit.KitCount != carkit.Count)
+                                        context.StorageKits.FirstOrDefault(sk => sk.KitId == kit.KitId).KitCount += kit.KitCount;
                                     kit.KitCount = carkit.Count;
                                     model.CarKits.Remove(carkit);
                                     context.SaveChanges();
                                 }
                             }
+                           
                             //добавляем новые
                             foreach (var kit in model.CarKits)
                             {
-                                context.CarKits.Add(new CarKit()
+                                context.BuiltCarKits.Add(new BuiltCarKit()
                                 {
                                     BuiltCarId = model.Id.Value,
                                     KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
@@ -98,7 +107,15 @@ namespace CarCenterImplementation.Implements
                         var car = context.BuiltCars.Include(bc => bc.CarKits).FirstOrDefault(bc => bc.Id == model.Id);
                         if (car == null)
                             throw new Exception("Такой машины нет!");
-                        context.CarKits.RemoveRange(car.CarKits);
+                        //возвращаем комплектации на склады
+                        foreach (var kit in car.CarKits)
+                        {
+                            var storagedKit = context.StorageKits
+                                .FirstOrDefault(sk => sk.KitId == kit.KitId);
+                            storagedKit.KitCount += kit.KitCount;
+                            context.SaveChanges();
+                        }
+                        context.BuiltCarKits.RemoveRange(car.CarKits);
                         context.BuiltCars.Remove(car);
                         context.SaveChanges();
                         transaction.Commit();
@@ -125,12 +142,13 @@ namespace CarCenterImplementation.Implements
                         Id = bc.Id,
                         CarName = bc.Car.CarName,
                         SoldDate = bc.SoldDate,
-                        CarKits = context.CarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == bc.Id)
+                        CarKits = context.BuiltCarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == bc.Id)
                         .Select(ck => new InstalledCarKit()
                         {
                             KitName = ck.Kit.KitName,
                             Count = ck.KitCount,
-                            InstallationDate = ck.InstallationDate
+                            InstallationDate = ck.InstallationDate,
+                            RemovedFromStorages = ck.RemovedFromStorages
                         }).ToList()
                     })
                     .ToList();

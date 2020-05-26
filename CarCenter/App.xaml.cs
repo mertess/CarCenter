@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,14 +25,7 @@ namespace CarCenter
             base.OnStartup(e);
             IUnityContainer container = new UnityContainer();
             SettingsContainer(container);
-            MailService.SetConfig(new MailConfig()
-            {
-                Login = "mitya.lagin@yandex.ru",
-                Password = "56321cegawdemalagin2019",
-                SmtpHost = "smtp.yandex.ru",
-                SmtpPort = 25
-            });
-            container.Resolve<MainWindow>().Show();
+            container.Resolve<LogInWindow>().Show();
         }
 
         private void SettingsContainer(IUnityContainer container)

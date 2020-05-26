@@ -2,8 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CarCenter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
              >
     <Application.Resources>
-         
+        <sys:String x:Key="login">*</sys:String>
+        <sys:String x:Key="password">*</sys:String>
+        <sys:String x:Key="SmtpHost">smtp.yandex.ru</sys:String>
+        <sys:Int32 x:Key="SmtpPort">25</sys:Int32>
+        <sys:String x:Key="ServerEmail">*</sys:String>
+        <sys:String x:Key="ServerPassword">*</sys:String>
     </Application.Resources>
 </Application>

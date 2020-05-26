@@ -5,10 +5,11 @@ using System.Text;
 
 namespace CarCenterImplementation.Models
 {
-    public class CarKit
+    public class BuiltCarKit
     {
         public int Id { set; get; }
         public DateTime InstallationDate { set; get; }
+        public bool RemovedFromStorages { set; get; }
         public int KitCount { set; get; }
         public int KitId { set; get; }
         public int BuiltCarId { set; get; }

@@ -236,32 +236,32 @@ namespace CarCenterBusinessLogic.BusinessLogic
             TableBorders tblBorders = new TableBorders();
             TopBorder topBorder = new TopBorder();
             topBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            topBorder.Color = "CC0000";
+            topBorder.Color = "000000";
             tblBorders.AppendChild(topBorder);
 
             BottomBorder bottomBorder = new BottomBorder();
             bottomBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            bottomBorder.Color = "CC0000";
+            bottomBorder.Color = "000000";
             tblBorders.AppendChild(bottomBorder);
 
             RightBorder rightBorder = new RightBorder();
             rightBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            rightBorder.Color = "CC0000";
+            rightBorder.Color = "000000";
             tblBorders.AppendChild(rightBorder);
 
             LeftBorder leftBorder = new LeftBorder();
             leftBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            leftBorder.Color = "CC0000";
+            leftBorder.Color = "000000";
             tblBorders.AppendChild(leftBorder);
 
             InsideHorizontalBorder insideHBorder = new InsideHorizontalBorder();
             insideHBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            insideHBorder.Color = "CC0000";
+            insideHBorder.Color = "000000";
             tblBorders.AppendChild(insideHBorder);
 
             InsideVerticalBorder insideVBorder = new InsideVerticalBorder();
             insideVBorder.Val = new EnumValue<BorderValues>(BorderValues.Thick);
-            insideVBorder.Color = "CC0000";
+            insideVBorder.Color = "000000";
             tblBorders.AppendChild(insideVBorder);
 
             tblProperties.AppendChild(tblBorders);

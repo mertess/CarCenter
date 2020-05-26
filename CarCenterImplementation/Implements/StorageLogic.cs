@@ -7,45 +7,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using CarCenterBusinessLogic.HelperModels;
 
 namespace CarCenterImplementation.Implements
 {
     public class StorageLogic : IStorageLogic
     {
-        public void CreateOrUpdate(StorageBindingModel model)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                Storage storage;
-                if (!model.Id.HasValue)
-                {
-                    storage = context.Storages.FirstOrDefault(s => s.StorageName == model.StorageName);
-                    if (storage != null)
-                        throw new Exception("Такое хранилище уже есть!");
-                    storage = new Storage();
-                    context.Storages.Add(storage);
-                }
-                else
-                {
-                    storage = context.Storages.FirstOrDefault(s => s.Id == model.Id);
-                }
-                storage.StorageName = model.StorageName;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(StorageViewModel model)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var storage = context.Storages.FirstOrDefault(s => s.Id == model.Id);
-                if (storage == null)
-                    throw new Exception("Такого хранилища нет!");
-                context.Storages.Remove(storage);
-                context.SaveChanges();
-            }
-        }
-
         public List<StorageViewModel> Read(StorageBindingModel model)
         {
             using (DatabaseContext context = new DatabaseContext())
@@ -64,7 +32,19 @@ namespace CarCenterImplementation.Implements
             }
         }
 
-        public void RemoveKits(CarBindingModel model)
+        public bool CheckCountKits(InstalledCarKit kit)
+        {
+            using(DatabaseContext context = new DatabaseContext())
+            {
+                int countStoragedKits = context.StorageKits
+                    .Include(sk => sk.Kit)
+                    .Where(sk => sk.Kit.KitName == kit.KitName)
+                    .Sum(sk => sk.KitCount);
+                return countStoragedKits >= kit.Count;
+            }
+        }
+
+        public void RemoveKits(BuiltCarBindingModel model)
         {
             using(DatabaseContext context = new DatabaseContext())
             {
@@ -74,26 +54,29 @@ namespace CarCenterImplementation.Implements
                     {
                         foreach (var carKit in model.CarKits)
                         {
-                            int kitCount = carKit.Value.Item1;
-                            var skList = context.StorageKits.Include(sk => sk.Kit).Where(sk => sk.Kit.KitName == carKit.Key);
-                            foreach (var sk in skList)
+                            if (!carKit.RemovedFromStorages)
                             {
-                                if(sk.KitCount >= kitCount)
+                                int kitCount = carKit.Count;
+                                var skList = context.StorageKits.Include(sk => sk.Kit).Where(sk => sk.Kit.KitName == carKit.KitName);
+                                foreach (var sk in skList)
                                 {
-                                    sk.KitCount -= kitCount;
-                                    kitCount = 0;
-                                    context.SaveChanges();
-                                    break;
-                                }
-                                else
-                                {
-                                    sk.KitCount = 0;
-                                    kitCount -= sk.KitCount;
-                                    context.SaveChanges();
+                                    if (sk.KitCount >= kitCount)
+                                    {
+                                        sk.KitCount -= kitCount;
+                                        kitCount = 0;
+                                        context.BuiltCarKits.Include(bck => bck.Kit)
+                                            .FirstOrDefault(bck => bck.Kit.KitName == carKit.KitName).RemovedFromStorages = true;
+                                        context.SaveChanges();
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        kitCount -= sk.KitCount;
+                                        sk.KitCount = 0;
+                                        context.SaveChanges();
+                                    }
                                 }
                             }
-                            if (kitCount > 0)
-                                throw new Exception("Не хватает комплектаций на складах!");    
                         }
                         transaction.Commit();
                     }
@@ -103,6 +86,32 @@ namespace CarCenterImplementation.Implements
                         throw;
                     }
                 }
+            }
+        }
+
+        public void AddKitToStorage(DepositKitBindingModel model)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                context.DepositKitDates.Add(new DepositKitDate()
+                {
+                    DepositDate = DateTime.Now,
+                    KitId = model.KitId,
+                    KitCount = model.KitCount,
+                    StorageId = model.StorageId
+                });
+                var storagedKit = context.StorageKits
+                    .FirstOrDefault(sk => sk.KitId == model.KitId && sk.StorageId == model.StorageId);
+                if (storagedKit != null)
+                    storagedKit.KitCount += model.KitCount;
+                else
+                    context.StorageKits.Add(new StorageKit()
+                    {
+                        KitId = model.KitId,
+                        StorageId = model.StorageId,
+                        KitCount = model.KitCount
+                    });
+                context.SaveChanges();
             }
         }
     }

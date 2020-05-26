@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using NLog;
 
 namespace CarCenter
 {
@@ -23,11 +24,13 @@ namespace CarCenter
     public partial class ReportKitsMovingWindow : Window
     {
         private readonly ReportLogic reportLogic;
+        private readonly Logger logger;
 
         public ReportKitsMovingWindow(ReportLogic reportLogic)
         {
             InitializeComponent();
             this.reportLogic = reportLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         private void ButtonMakeReport_Click(object sender, RoutedEventArgs e)
@@ -44,12 +47,13 @@ namespace CarCenter
                 }
                 else
                 {
-                    //...
+                    MessageBox.Show("Необходимо выбрать временной период!", "Предупреждение", MessageBoxButton.OK);
                 }
             }
             catch(Exception ex)
             {
-                //..
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -111,12 +115,13 @@ namespace CarCenter
                 }
                 else
                 {
-                    //...
+                    MessageBox.Show("Необходимо выбрать временной период!", "Предупреждение", MessageBoxButton.OK);
                 }
             }
             catch (Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
     }

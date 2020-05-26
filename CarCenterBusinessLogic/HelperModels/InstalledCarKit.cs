@@ -11,6 +11,7 @@ namespace CarCenterBusinessLogic.HelperModels
         private string kitName;
         private int count;
         private DateTime installationDate;
+        public bool RemovedFromStorages { set; get; }
 
         public string KitName 
         {

@@ -16,7 +16,7 @@ namespace CarCenterImplementation.Implements
         {
             using (DatabaseContext context = new DatabaseContext())
             {
-                return context.CarKits
+                return context.BuiltCarKits
                     .Where(ck => ck.InstallationDate >= model.DateFrom && ck.InstallationDate <= model.DateTo)
                     .Include(ck => ck.Kit)
                     .Select(ck => new CarKitViewModel()

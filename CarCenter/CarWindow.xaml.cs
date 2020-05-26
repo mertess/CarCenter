@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CarCenterBusinessLogic.BindingModels;
 using CarCenterBusinessLogic.ViewModels;
+using NLog;
+using System.Text.RegularExpressions;
 
 namespace CarCenter
 {
@@ -24,11 +26,13 @@ namespace CarCenter
     public partial class CarWindow : Window
     {
         private readonly ICarLogic carLogic;
+        private readonly Logger logger;
 
         public CarWindow(ICarLogic carLogic)
         {
             InitializeComponent();
             this.carLogic = carLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         private void buttonAccept_Click(object sender, RoutedEventArgs e)
@@ -53,14 +57,17 @@ namespace CarCenter
                             CarName = CarNameTextBox.Text.ToString(),
                             Cost = Convert.ToInt32(CarCostTextBox.Text)
                         });
-                    } 
+                    }
+                    this.DialogResult = true;
+                    this.Close();
                 }
-                this.DialogResult = true;
-                this.Close();
+                else
+                    MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 

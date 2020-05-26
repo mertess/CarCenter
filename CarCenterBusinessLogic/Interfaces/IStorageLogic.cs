@@ -1,4 +1,5 @@
 ﻿using CarCenterBusinessLogic.BindingModels;
+using CarCenterBusinessLogic.HelperModels;
 using CarCenterBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,9 @@ namespace CarCenterBusinessLogic.Interfaces
 {
     public interface IStorageLogic
     {
-        void CreateOrUpdate(StorageBindingModel model);
-        void Delete(StorageViewModel model);
         List<StorageViewModel> Read(StorageBindingModel model);
-        //void AddKit();
-        void RemoveKits(CarBindingModel model);
+        bool CheckCountKits(InstalledCarKit installedCarKit);
+        void AddKitToStorage(DepositKitBindingModel model);
+        void RemoveKits(BuiltCarBindingModel model);
     }
 }

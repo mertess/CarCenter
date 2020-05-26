@@ -1,5 +1,6 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
 using CarCenterBusinessLogic.ViewModels;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,12 +27,16 @@ namespace CarCenter
     {
         private readonly IUnityContainer container;
         private readonly IBuiltCarLogic builtCarLogic;
+        private readonly ICarLogic carLogic;
+        private readonly Logger logger;
 
-        public MainWindow(IUnityContainer container, IBuiltCarLogic builtCarLogic)
+        public MainWindow(IUnityContainer container, IBuiltCarLogic builtCarLogic, ICarLogic carLogic)
         {
             InitializeComponent();
             this.builtCarLogic = builtCarLogic;
             this.container = container;
+            this.carLogic = carLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
             Load_Data();
         }
 
@@ -41,38 +46,47 @@ namespace CarCenter
             {
                 DataGridCars.ItemsSource = builtCarLogic.Read(null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //... диалоговое окно
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
         private void ButtonCreate_Click(object sender, EventArgs args)
         {
-            var window = container.Resolve<BuildingCarWindow>();
-            if (window.ShowDialog().Value)
+            try
             {
-                Load_Data();
+                if (carLogic.Read(null).Count != 0)
+                {
+                    var window = container.Resolve<BuildingCarWindow>();
+                    if (window.ShowDialog().Value)
+                    {
+                        Load_Data();
+                    }
+                }else
+                    MessageBox.Show("Добавьте хотябы одну машину!", "Сообщение", MessageBoxButton.OK);
+            }
+            catch(Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
         private void ButtonEdit_Click(object sender, EventArgs args)
         {
-            try
+            if (DataGridCars.SelectedItems.Count == 1)
             {
-                if (DataGridCars.SelectedItems.Count == 1)
+                var window = container.Resolve<BuildingCarWindow>();
+                window.DataContext = DataGridCars.SelectedItem as BuiltCarViewModel;
+                if (window.ShowDialog().Value)
                 {
-                    var window = container.Resolve<BuildingCarWindow>();
-                    window.DataContext = DataGridCars.SelectedItem as BuiltCarViewModel;
-                    if (window.ShowDialog().Value)
-                    {
-                        Load_Data();
-                    }
+                    Load_Data();
                 }
-            }catch(Exception ex)
-            {
-                //...
             }
+            else
+                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
         }
 
         private void ButtonDelete_Click(object sender, EventArgs args)
@@ -84,9 +98,13 @@ namespace CarCenter
                     builtCarLogic.Delete(DataGridCars.SelectedItem as BuiltCarViewModel);
                     Load_Data();
                 }
-            }catch(Exception ex)
+                else
+                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+            }
+            catch(Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -110,26 +128,20 @@ namespace CarCenter
 
         private void Click_ReportSoldCarsMenuItem(object sender, EventArgs args)
         {
-            try
-            {
-                var window = container.Resolve<ReportSoldCarsWindow>();
-                window.Show();
-            }catch(Exception ex)
-            {
-                //...
-            }
+            var window = container.Resolve<ReportSoldCarsWindow>();
+            window.Show();
         }
 
         private void Click_ReportKitsMovingMenuItem(object sender, EventArgs args)
         {
-            try
-            {
-                var window = container.Resolve<ReportKitsMovingWindow>();
-                window.Show();
-            }catch(Exception ex)
-            {
-                //...
-            }
+            var window = container.Resolve<ReportKitsMovingWindow>();
+            window.Show();
+        }
+
+        private void Click_AddKitToStorageMenuItem(object sender, EventArgs args)
+        {
+            var window = container.Resolve<AddKitToStorageWindow>();
+            window.Show();
         }
     }
 }

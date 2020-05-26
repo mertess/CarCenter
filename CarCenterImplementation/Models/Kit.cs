@@ -13,7 +13,7 @@ namespace CarCenterImplementation.Models
         public string KitName { set; get; }
         public int Cost { set; get; }
         [ForeignKey("KitId")]
-        public virtual List<CarKit> CarKits { set; get; }
+        public virtual List<BuiltCarKit> CarKits { set; get; }
         [ForeignKey("KitId")]
         public virtual List<StorageKit> StorageKits { set; get; }
         [ForeignKey("KitId")]

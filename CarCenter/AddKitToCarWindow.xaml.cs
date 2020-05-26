@@ -2,8 +2,10 @@
 using CarCenterBusinessLogic.Interfaces;
 using CarCenterBusinessLogic.ViewModels;
 using CarCenterImplementation.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +13,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 
 namespace CarCenter
 {
@@ -25,11 +28,16 @@ namespace CarCenter
     public partial class AddKitToCarWindow : Window
     {
         private readonly IKitLogic kitLogic;
+        private readonly IStorageLogic storageLogic;
+        private readonly Logger logger;
         public InstalledCarKit InstalledCarKit { set; get; }
-        public AddKitToCarWindow(IKitLogic kitLogic)
+
+        public AddKitToCarWindow(IKitLogic kitLogic, IStorageLogic storageLogic)
         {
             InitializeComponent();
             this.kitLogic = kitLogic;
+            this.storageLogic = storageLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -37,20 +45,36 @@ namespace CarCenter
             this.DialogResult = false;
             this.Close();
         }
-
+        
         private void buttonAccept_Click(object sender, RoutedEventArgs e)
         {
-            if(AddKitComboBox.SelectedItem != null && !string.IsNullOrEmpty(KitCountTextBox.Text))
+            try
             {
-                InstalledCarKit.KitName = (AddKitComboBox.SelectedItem as KitViewModel).KitName;
-                InstalledCarKit.Count = Convert.ToInt32(KitCountTextBox.Text);
-                InstalledCarKit.InstallationDate = DateTime.Now;
-                this.DialogResult = true;
-                this.Close();
+                if (AddKitComboBox.SelectedItem != null && !string.IsNullOrEmpty(KitCountTextBox.Text)) 
+                {
+                    if (storageLogic.CheckCountKits(new InstalledCarKit()
+                    {
+                        KitName = (AddKitComboBox.SelectedItem as KitViewModel).KitName,
+                        Count = Convert.ToInt32(KitCountTextBox.Text) - InstalledCarKit.Count
+                    }))
+                    {
+                        InstalledCarKit.KitName = (AddKitComboBox.SelectedItem as KitViewModel).KitName;
+                        InstalledCarKit.Count = Convert.ToInt32(KitCountTextBox.Text);
+                        InstalledCarKit.InstallationDate = DateTime.Now;
+                        InstalledCarKit.RemovedFromStorages = false;
+                        this.DialogResult = true;
+                        this.Close();
+                    }
+                    else
+                        MessageBox.Show("Недостаточно данной комплектации на скадах!", "Предупреждение", MessageBoxButton.OK);
+                }
+                else
+                    MessageBox.Show("Заполнены не все поля!", "Предупреждение", MessageBoxButton.OK);
             }
-            else
+            catch (Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -67,9 +91,11 @@ namespace CarCenter
                 }
                 else
                     InstalledCarKit = new InstalledCarKit();
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
-                //...
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
     }

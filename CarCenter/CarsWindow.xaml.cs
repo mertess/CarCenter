@@ -1,5 +1,6 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
 using CarCenterBusinessLogic.ViewModels;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,14 @@ namespace CarCenter
     {
         private readonly IUnityContainer container;
         private readonly ICarLogic carLogic;
+        private readonly Logger logger;
 
         public CarsWindow(IUnityContainer container, ICarLogic carLogic)
         {
             InitializeComponent();
             this.container = container;
             this.carLogic = carLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
             Load_Data();
         }
 
@@ -39,9 +42,10 @@ namespace CarCenter
             {
                 DataGridCars.ItemsSource = carLogic.Read(null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //..
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -64,15 +68,25 @@ namespace CarCenter
                 {
                     Load_Data();
                 }
-            }
+            }else
+                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
         }
 
         private void ButtonDeleteCar_Click(object sender, RoutedEventArgs e)
         {
-            if(DataGridCars.SelectedItems.Count == 1)
+            try
             {
-                carLogic.Delete(DataGridCars.SelectedItem as CarViewModel);
-                Load_Data();
+                if (DataGridCars.SelectedItems.Count == 1)
+                {
+                    carLogic.Delete(DataGridCars.SelectedItem as CarViewModel);
+                    Load_Data();
+                }
+                else
+                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+            }catch(Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
     }

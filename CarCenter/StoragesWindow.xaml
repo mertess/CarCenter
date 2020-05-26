@@ -20,9 +20,6 @@
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Операции">
             <StackPanel>
-                <Button x:Name="ButtonAddStorage" Margin="5 5 5 5" Click="ButtonAddStorage_Click">Добавить</Button>
-                <Button x:Name="ButtonEditStorage" Margin="5 5 5 5" Click="ButtonEditStorage_Click">Изменить</Button>
-                <Button x:Name="ButtonDeleteStorage" Margin="5 5 5 5" Click="ButtonDeleteStorage_Click">Удалить</Button>
                 <Button x:Name="ButtonShowStoragedKits" Margin="5 5 5 5" Click="ButtonShowStoragedKits_Click">Комплектации в хранилище</Button>
             </StackPanel>
         </GroupBox>

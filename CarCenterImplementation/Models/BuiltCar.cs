@@ -11,7 +11,7 @@ namespace CarCenterImplementation.Models
         public DateTime? SoldDate { set; get; }
         public int CarId { set; get; }
         [ForeignKey("BuiltCarId")]
-        public virtual List<CarKit> CarKits { set; get; }
+        public virtual List<BuiltCarKit> CarKits { set; get; }
         public virtual Car Car { set; get; }
     }
 }

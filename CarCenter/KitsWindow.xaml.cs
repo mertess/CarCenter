@@ -1,5 +1,6 @@
 ﻿using CarCenterBusinessLogic.Interfaces;
 using CarCenterBusinessLogic.ViewModels;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Unity;
+using Unity.Injection;
 
 namespace CarCenter
 {
@@ -25,12 +26,14 @@ namespace CarCenter
     {
         private readonly IUnityContainer container;
         private readonly IKitLogic kitLogic;
+        private readonly Logger logger;
 
         public KitsWindow(IUnityContainer container, IKitLogic kitLogic)
         {
             InitializeComponent();
             this.container = container;
             this.kitLogic = kitLogic;
+            this.logger = LogManager.GetCurrentClassLogger();
             Load_Data();
         }
 
@@ -40,9 +43,10 @@ namespace CarCenter
             {
                 DataGridKits.ItemsSource = kitLogic.Read(null);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
 
@@ -65,15 +69,25 @@ namespace CarCenter
                 {
                     Load_Data();
                 }
-            }
+            }else
+                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
         }
 
         private void ButtonDeleteKit_Click(object sender, RoutedEventArgs e)
         {
-            if(DataGridKits.SelectedItems.Count == 1)
+            try
             {
-                kitLogic.Delete(DataGridKits.SelectedItem as KitViewModel);
-                Load_Data();
+                if (DataGridKits.SelectedItems.Count == 1)
+                {
+                    kitLogic.Delete(DataGridKits.SelectedItem as KitViewModel);
+                    Load_Data();
+                }
+                else
+                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+            }catch(Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
     }

@@ -29,6 +29,7 @@
                 <MenuItem Header="Проданные машины" Click="Click_ReportSoldCarsMenuItem"></MenuItem>
                 <MenuItem Header="Движение комплектаций" Click="Click_ReportKitsMovingMenuItem"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Пополнить хранилище" Click="Click_AddKitToStorageMenuItem"/>
         </Menu>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Собранные машины">
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">

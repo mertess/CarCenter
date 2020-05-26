@@ -19,7 +19,7 @@
             <TextBox x:Name="KitNameTextBox"
                      Margin="10 10 10 10" Width="150"
                      HorizontalAlignment="Center" VerticalAlignment="Center"
-                     Text="{Binding KitName}"></TextBox>
+                     Text="{Binding KitName}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Label Margin="5 5 5 5" Padding="5 5 5 5" 
@@ -28,7 +28,7 @@
             <TextBox x:Name="KitCostTextBox"
                      Margin="10 10 10 10" Width="150"
                      HorizontalAlignment="Center" VerticalAlignment="Center"
-                     Text="{Binding KitCost}"></TextBox>
+                     Text="{Binding KitCost}"/>
         </StackPanel>
         <DockPanel Grid.Row="2" LastChildFill="False">
             <Button 
