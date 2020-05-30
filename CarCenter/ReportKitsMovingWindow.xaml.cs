@@ -37,8 +37,10 @@ namespace CarCenter
         {
             try
             {
-                if (DatePickerFrom.SelectedDate.HasValue && DatePickerTo.SelectedDate.HasValue)
+                if (DatePickerFrom.SelectedDate.HasValue && DatePickerTo.SelectedDate.HasValue
+                    && DatePickerFrom.SelectedDate <= DatePickerTo.SelectedDate)
                 {
+                    if (TableRowGroup.Rows.Count != 1) TableRowGroup.Rows.RemoveRange(1, TableRowGroup.Rows.Count - 1);
                     CreateTable(reportLogic.GetReportActionKits(new KitReportPeriodBindingModel()
                     {
                         DateFrom = DatePickerFrom.SelectedDate.Value,
@@ -47,7 +49,8 @@ namespace CarCenter
                 }
                 else
                 {
-                    MessageBox.Show("Необходимо выбрать временной период!", "Предупреждение", MessageBoxButton.OK);
+                    MessageBox.Show("Необходимо выбрать временной период!" + 
+                        " Его начало не должно превышать его конец!", "Предупреждение", MessageBoxButton.OK);
                 }
             }
             catch(Exception ex)
@@ -108,6 +111,7 @@ namespace CarCenter
                 if (DatePickerFrom.SelectedDate.HasValue && DatePickerTo.SelectedDate.HasValue)
                 {
                     var window = new InputClientEmailWindow();
+                    window.Owner = this;
                     if (window.ShowDialog().Value) {
                         reportLogic.SendPdfReport(window.EmailPdfTextBox.Text,
                             DatePickerFrom.SelectedDate.Value, DatePickerTo.SelectedDate.Value); 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         xmlns:conv="clr-namespace:CarCenter.utils"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="450" Width="600">
     <Window.Resources>
         <conv:DateTimeDateConverter x:Key="DateConverter"/>
@@ -30,12 +30,13 @@
                 <MenuItem Header="Движение комплектаций" Click="Click_ReportKitsMovingMenuItem"></MenuItem>
             </MenuItem>
             <MenuItem Header="Пополнить хранилище" Click="Click_AddKitToStorageMenuItem"/>
+            <MenuItem Header="Продать" Click="Click_SellCarMenuItem"/>
         </Menu>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Собранные машины">
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="*" />
-                    <DataGridTextColumn Header="Цена" Binding="{Binding FinalCost}" Width="*" />
+                    <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="2*" />
+                    <DataGridTextColumn Header="Цена" Binding="{Binding FinalCost}" Width="0.8*" />
                     <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate, Converter={StaticResource DateConverter}}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>

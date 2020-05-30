@@ -52,6 +52,7 @@ namespace CarCenter
         private void ButtonAddCar_Click(object sender, RoutedEventArgs e)
         {
             var window = container.Resolve<CarWindow>();
+            window.Owner = this;
             if (window.ShowDialog().Value)
             {
                 Load_Data();
@@ -63,6 +64,7 @@ namespace CarCenter
             if(DataGridCars.SelectedItems.Count == 1)
             {
                 var window = container.Resolve<CarWindow>();
+                window.Owner = this;
                 window.DataContext = DataGridCars.SelectedItem as CarViewModel;
                 if (window.ShowDialog().Value)
                 {

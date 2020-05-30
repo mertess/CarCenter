@@ -41,6 +41,11 @@ namespace CarCenter
             {
                 if (!string.IsNullOrEmpty(CarNameTextBox.Text) && 
                     !string.IsNullOrEmpty(CarCostTextBox.Text)) {
+                    if (CarCostTextBox.Text.TrimStart().StartsWith("-"))
+                    {
+                        MessageBox.Show("Стоимость не может быть отрицательной!", "Предупреждение", MessageBoxButton.OK);
+                        return;
+                    }
                     if (DataContext != null)
                     {
                         carLogic.CreateOrUpdate(new CarBindingModel()

@@ -57,6 +57,7 @@ namespace CarCenter
         private void ButtonAddKit_Click(object sender, RoutedEventArgs e)
         {
             var window = container.Resolve<AddKitToCarWindow>();
+            window.Owner = this;
             if (window.ShowDialog().Value)
             {
                 var kit = InstalledCarKits.FirstOrDefault(k => k.KitName == window.InstalledCarKit.KitName);
@@ -75,6 +76,7 @@ namespace CarCenter
             if(DataGridCarKits.SelectedItems.Count == 1)
             {
                 var window = container.Resolve<AddKitToCarWindow>();
+                window.Owner = this;
                 window.InstalledCarKit = DataGridCarKits.SelectedItem as InstalledCarKit;
                 window.ShowDialog();
             }else
@@ -134,7 +136,7 @@ namespace CarCenter
                         CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
                         CarKits = InstalledCarKits.ToList(),
                         FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
-                            InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                            InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost * ck.Count)
                     });
                     storageLogic.RemoveKits(new BuiltCarBindingModel() { CarKits = InstalledCarKits.ToList() });
                 }
@@ -145,7 +147,7 @@ namespace CarCenter
                         CarName = (CarComboBox.SelectedItem as CarViewModel).CarName,
                         CarKits = InstalledCarKits.ToList(),
                         FinalCost = (CarComboBox.SelectedItem as CarViewModel).Cost +
-                           InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost)
+                           InstalledCarKits.Sum(ck => kits.FirstOrDefault(k => k.KitName == ck.KitName).KitCost * ck.Count)
                     });
                     storageLogic.RemoveKits(new BuiltCarBindingModel() { CarKits = InstalledCarKits.ToList() });
                 }

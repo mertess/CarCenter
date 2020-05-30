@@ -45,46 +45,51 @@ namespace CarCenterImplementation.Implements
                         else
                         {
                             car = context.BuiltCars.FirstOrDefault(bc => bc.Id == model.Id.Value);
-                            car.CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id;
-                            //удаляем те, которых нет в модели, возвращаем на склад
-                            var kits = context.BuiltCarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
-                            foreach (var kit in kits)
+                            //пропускаем этап работы с комплектациями, если необходимо изменить только статус машины
+                            if (model.CarKits != null)
                             {
-                                var carkit = model.CarKits.FirstOrDefault(ck => ck.KitName == kit.Kit.KitName);
-                                if (carkit == null)
+                                car.CarId = context.Cars.FirstOrDefault(c => c.CarName == model.CarName).Id;
+                                //удаляем те, которых нет в модели, возвращаем на склад
+                                var kits = context.BuiltCarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == model.Id);
+                                foreach (var kit in kits)
                                 {
-                                    //возвращаем комплектацию на склад
-                                    context.StorageKits.FirstOrDefault(sk => sk.KitId == kit.KitId).KitCount += kit.KitCount;
-                                    context.BuiltCarKits.Remove(kit);
-                                    context.SaveChanges();
-                                }
-                                else
-                                {
-                                    //возвращаем текущее колво комплектации на склад,
-                                    //для правильного расчета вычета данной комплектации со складов
-                                    //в случае редактирования количества данной комплектации
-                                    if(kit.KitCount != carkit.Count)
+                                    var carkit = model.CarKits.FirstOrDefault(ck => ck.KitName == kit.Kit.KitName);
+                                    if (carkit == null)
+                                    {
+                                        //возвращаем комплектацию на склад
                                         context.StorageKits.FirstOrDefault(sk => sk.KitId == kit.KitId).KitCount += kit.KitCount;
-                                    kit.KitCount = carkit.Count;
-                                    model.CarKits.Remove(carkit);
+                                        context.BuiltCarKits.Remove(kit);
+                                        context.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        //возвращаем текущее колво комплектации на склад,
+                                        //для правильного расчета вычета данной комплектации со складов
+                                        //в случае редактирования количества данной комплектации
+                                        if (kit.KitCount != carkit.Count)
+                                            context.StorageKits.FirstOrDefault(sk => sk.KitId == kit.KitId).KitCount += kit.KitCount;
+                                        kit.KitCount = carkit.Count;
+                                        model.CarKits.Remove(carkit);
+                                        context.SaveChanges();
+                                    }
+                                }
+
+                                //добавляем новые
+                                foreach (var kit in model.CarKits)
+                                {
+                                    context.BuiltCarKits.Add(new BuiltCarKit()
+                                    {
+                                        BuiltCarId = model.Id.Value,
+                                        KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
+                                        KitCount = kit.Count,
+                                        InstallationDate = DateTime.Now
+                                    });
                                     context.SaveChanges();
                                 }
-                            }
-                           
-                            //добавляем новые
-                            foreach (var kit in model.CarKits)
-                            {
-                                context.BuiltCarKits.Add(new BuiltCarKit()
-                                {
-                                    BuiltCarId = model.Id.Value,
-                                    KitId = context.Kits.FirstOrDefault(k => k.KitName == kit.KitName).Id,
-                                    KitCount = kit.Count,
-                                    InstallationDate = DateTime.Now
-                                });
-                                context.SaveChanges();
                             }
                         }
                         car.SoldDate = model.SoldDate;
+                        car.FinalCost = model.FinalCost;
                         context.SaveChanges();
                         transaction.Commit();
                     }catch(Exception ex)
@@ -142,6 +147,7 @@ namespace CarCenterImplementation.Implements
                         Id = bc.Id,
                         CarName = bc.Car.CarName,
                         SoldDate = bc.SoldDate,
+                        FinalCost = bc.FinalCost,
                         CarKits = context.BuiltCarKits.Include(ck => ck.Kit).Where(ck => ck.BuiltCarId == bc.Id)
                         .Select(ck => new InstalledCarKit()
                         {

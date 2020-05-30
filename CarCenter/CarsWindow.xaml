@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="Список машин" Height="350" Width="450">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -14,7 +14,7 @@
         <GroupBox Grid.Column="0" Header="Машины">
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название машины" Width="*" Binding="{Binding CarName}"/>
+                    <DataGridTextColumn Header="Название машины" Width="2*" Binding="{Binding CarName}"/>
                     <DataGridTextColumn Header="Стоимость" Width="*" Binding="{Binding Cost}"/>
                 </DataGrid.Columns>
             </DataGrid>

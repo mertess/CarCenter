@@ -52,6 +52,11 @@ namespace CarCenter
             {
                 if (AddKitComboBox.SelectedItem != null && !string.IsNullOrEmpty(KitCountTextBox.Text)) 
                 {
+                    if (KitCountTextBox.Text.TrimStart().StartsWith("-"))
+                    {
+                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение", MessageBoxButton.OK);
+                        return;
+                    }
                     if (storageLogic.CheckCountKits(new InstalledCarKit()
                     {
                         KitName = (AddKitComboBox.SelectedItem as KitViewModel).KitName,

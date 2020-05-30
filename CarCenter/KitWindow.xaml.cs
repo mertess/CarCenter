@@ -40,6 +40,11 @@ namespace CarCenter
             {
                 if (!string.IsNullOrEmpty(KitNameTextBox.Text) && !string.IsNullOrEmpty(KitCostTextBox.Text))
                 {
+                    if (KitCostTextBox.Text.TrimStart().StartsWith("-"))
+                    {
+                        MessageBox.Show("Стоимость не может быть отрицательной!", "Предупреждение", MessageBoxButton.OK);
+                        return;
+                    }
                     if (this.DataContext != null)
                     {
                         kitLogic.CreateOrUpdate(new KitBindingModel()

@@ -47,6 +47,11 @@ namespace CarCenter
             {
                 if (StorageComboBox.SelectedItem != null && KitComboBox.SelectedItem != null &&
                     !string.IsNullOrEmpty(KitCountTextBox.Text)) {
+                    if (KitCountTextBox.Text.TrimStart().StartsWith("-"))
+                    {
+                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение", MessageBoxButton.OK);
+                        return;
+                    }
                     storageLogic.AddKitToStorage(new DepositKitBindingModel()
                     {
                         StorageId = (StorageComboBox.SelectedItem as StorageViewModel).Id,
