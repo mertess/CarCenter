@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
+        xmlns:conv="clr-namespace:CarCenter.utils"
         mc:Ignorable="d"
-         Title="Список хранилищ" Height="350" Width="450">
+         Title="Список хранилищ" Height="350" Width="600">
+    <Window.Resources>
+        <conv:SelectedGridItemConverter x:Key="Converter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width ="*"></ColumnDefinition>
+            <ColumnDefinition Width="1.7*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="Хранилища">
             <DataGrid AutoGenerateColumns="False" x:Name="DataGridStorages">
@@ -18,10 +22,14 @@
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
-        <GroupBox Grid.Column="1" Header="Операции">
-            <StackPanel>
-                <Button x:Name="ButtonShowStoragedKits" Margin="5 5 5 5" Click="ButtonShowStoragedKits_Click">Комплектации в хранилище</Button>
-            </StackPanel>
+        <GroupBox Grid.Column="1" Header="Комплектации">
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridStoragedKits" 
+                      ItemsSource="{Binding ElementName=DataGridStorages, Path=SelectedItem, Converter={StaticResource Converter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Комплектация" Width="2*" Binding="{Binding Key}"/>
+                    <DataGridTextColumn Header="Количество" Width="*" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </GroupBox>
     </Grid>
 </Window>

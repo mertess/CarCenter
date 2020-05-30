@@ -213,13 +213,11 @@
     <Compile Include="ReportSoldCarsWindow.xaml.cs">
       <DependentUpon>ReportSoldCarsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StoragedKitsWindow.xaml.cs">
-      <DependentUpon>StoragedKitsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="StoragesWindow.xaml.cs">
       <DependentUpon>StoragesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="utils\DateTimeDateConverter.cs" />
+    <Compile Include="utils\SelectedGridItemConverter.cs" />
     <Page Include="AddKitToCarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -285,10 +283,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReportSoldCarsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StoragedKitsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
