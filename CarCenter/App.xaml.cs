@@ -35,6 +35,7 @@ namespace CarCenter
             container.RegisterType<IStorageLogic, StorageLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IBuiltCarLogic, BuiltCarLogic>(new HierarchicalLifetimeManager());
             container.RegisterType<IReportHelper, ReportHelper>(new HierarchicalLifetimeManager());
+            container.RegisterType<BackUpAbstractLogic, BackUpLogic>(new HierarchicalLifetimeManager());
         }
     }
 }

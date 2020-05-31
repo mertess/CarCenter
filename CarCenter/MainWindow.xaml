@@ -20,6 +20,10 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Menu Grid.Row ="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Back up">
+                <MenuItem Header="Json" Click="Click_SaveJsonBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Xml" Click="Click_SaveXmlBackUpMenuItem"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Ресурсы">
                 <MenuItem Header="Комплектации" Click="Click_KitsMenuItem"></MenuItem>
                 <MenuItem Header="Машины" Click="Click_CarsMenuItem"></MenuItem>

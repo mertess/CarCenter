@@ -1,8 +1,4 @@
-﻿using CarCenterBusinessLogic.Interfaces;
-using CarCenterBusinessLogic.ViewModels;
-using CarCenterBusinessLogic.BindingModels;
-using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,6 +14,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Unity;
+using CarCenterBusinessLogic.Interfaces;
+using CarCenterBusinessLogic.ViewModels;
+using CarCenterBusinessLogic.BindingModels;
+using CarCenterBusinessLogic.Enums;
+using CarCenterBusinessLogic.BusinessLogic;
+using NLog;
 
 namespace CarCenter
 {
@@ -29,14 +31,17 @@ namespace CarCenter
         private readonly IUnityContainer container;
         private readonly IBuiltCarLogic builtCarLogic;
         private readonly ICarLogic carLogic;
+        private readonly BackUpAbstractLogic backUpLogic;
         private readonly Logger logger;
 
-        public MainWindow(IUnityContainer container, IBuiltCarLogic builtCarLogic, ICarLogic carLogic)
+        public MainWindow(IUnityContainer container, IBuiltCarLogic builtCarLogic,
+            ICarLogic carLogic, BackUpAbstractLogic backUpLogic)
         {
             InitializeComponent();
             this.builtCarLogic = builtCarLogic;
             this.container = container;
             this.carLogic = carLogic;
+            this.backUpLogic = backUpLogic;
             this.logger = LogManager.GetCurrentClassLogger();
             Load_Data();
         }
@@ -182,6 +187,39 @@ namespace CarCenter
                 else
                     MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
             }catch(Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+            }
+        }
+
+        private void Click_SaveJsonBackUpMenuItem(object sender, EventArgs args)
+        {
+            try
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    backUpLogic.CreateDir(dialog.SelectedPath, BackUpTypeEnum.Json);
+                }
+            }catch(Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+            }
+        }
+
+        private void Click_SaveXmlBackUpMenuItem(object sender, EventArgs args)
+        {
+            try
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    backUpLogic.CreateDir(dialog.SelectedPath, BackUpTypeEnum.Xml);
+                }
+            }
+            catch (Exception ex)
             {
                 logger.Warn(ex.Message);
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
