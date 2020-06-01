@@ -54,11 +54,12 @@ namespace CarCenter
                     Close();
                 }
                 else
-                    MessageBox.Show("Неверный логин или пароль!", "Предупреждение", MessageBoxButton.OK);
+                    MessageBox.Show("Неверный логин или пароль!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

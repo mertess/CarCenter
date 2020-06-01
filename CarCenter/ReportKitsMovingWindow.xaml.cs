@@ -50,13 +50,14 @@ namespace CarCenter
                 else
                 {
                     MessageBox.Show("Необходимо выбрать временной период!" + 
-                        " Его начало не должно превышать его конец!", "Предупреждение", MessageBoxButton.OK);
+                        " Его начало не должно превышать его конец!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -108,24 +109,26 @@ namespace CarCenter
         {
             try
             {
-                if (DatePickerFrom.SelectedDate.HasValue && DatePickerTo.SelectedDate.HasValue)
+                if (DatePickerFrom.SelectedDate.HasValue && DatePickerTo.SelectedDate.HasValue
+                    && DatePickerFrom.SelectedDate <= DatePickerTo.SelectedDate)
                 {
                     var window = new InputClientEmailWindow();
                     window.Owner = this;
-                    if (window.ShowDialog().Value) {
+                    if (window.ShowDialog().Value)
+                    {
                         reportLogic.SendPdfReport(window.EmailPdfTextBox.Text,
-                            DatePickerFrom.SelectedDate.Value, DatePickerTo.SelectedDate.Value); 
+                            DatePickerFrom.SelectedDate.Value, DatePickerTo.SelectedDate.Value);
                     }
                 }
                 else
-                {
-                    MessageBox.Show("Необходимо выбрать временной период!", "Предупреждение", MessageBoxButton.OK);
-                }
+                    MessageBox.Show("Необходимо выбрать временной период!" +
+                        " Его начало не должно превышать его конец!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

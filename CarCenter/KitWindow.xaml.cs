@@ -42,7 +42,8 @@ namespace CarCenter
                 {
                     if (KitCostTextBox.Text.TrimStart().StartsWith("-"))
                     {
-                        MessageBox.Show("Стоимость не может быть отрицательной!", "Предупреждение", MessageBoxButton.OK);
+                        MessageBox.Show("Стоимость не может быть отрицательной!", "Предупреждение",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     if (this.DataContext != null)
@@ -65,12 +66,13 @@ namespace CarCenter
                     this.DialogResult = true;
                     this.Close();
                 }else
-                    MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK);
+                    MessageBox.Show("Заполните все поля!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

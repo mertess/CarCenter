@@ -73,25 +73,34 @@ namespace CarCenter
 
         private void ButtonEditKit_Click(object sender, RoutedEventArgs e)
         {
-            if(DataGridCarKits.SelectedItems.Count == 1)
+            if (DataGridCarKits.SelectedItems.Count == 1)
             {
-                var window = container.Resolve<AddKitToCarWindow>();
-                window.Owner = this;
-                window.InstalledCarKit = DataGridCarKits.SelectedItem as InstalledCarKit;
-                window.ShowDialog();
-            }else
-                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                if ((DataGridCarKits.SelectedItem as InstalledCarKit) != null)
+                {
+                    var window = container.Resolve<AddKitToCarWindow>();
+                    window.Owner = this;
+                    window.InstalledCarKit = DataGridCarKits.SelectedItem as InstalledCarKit;
+                    window.ShowDialog();
+                }
+            }
+            else
+                MessageBox.Show("Выберите одну запись!", "Сообщение",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ButtonDeleteKit_Click(object sender, RoutedEventArgs e)
         {
             if(DataGridCarKits.SelectedItems.Count == 1)
             {
-                InstalledCarKits.Remove(InstalledCarKits
-                    .FirstOrDefault(ck => ck.KitName == (DataGridCarKits.SelectedItem as InstalledCarKit).KitName));
+                if ((DataGridCarKits.SelectedItem as InstalledCarKit) != null)
+                {
+                    InstalledCarKits.Remove(InstalledCarKits
+                        .FirstOrDefault(ck => ck.KitName == (DataGridCarKits.SelectedItem as InstalledCarKit).KitName));
+                }
             }
             else
-                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                MessageBox.Show("Выберите одну запись!", "Сообщение",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -113,7 +122,7 @@ namespace CarCenter
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -156,7 +165,7 @@ namespace CarCenter
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

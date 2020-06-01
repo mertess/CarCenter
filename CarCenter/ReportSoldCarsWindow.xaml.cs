@@ -47,12 +47,12 @@ namespace CarCenter
                 }
                 else
                     MessageBox.Show("Поле ввода адреса электронной почты не заполнено \n" +
-                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK);
+                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -67,12 +67,12 @@ namespace CarCenter
                 }
                 else
                     MessageBox.Show("Поле ввода адреса электронной почты не заполнено \n" +
-                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK);
+                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

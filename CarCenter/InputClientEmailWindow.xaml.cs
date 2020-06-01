@@ -37,7 +37,7 @@ namespace CarCenter
             else
             {
                 MessageBox.Show("Поле ввода адреса электронной почты не заполнено \n" +
-                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK);
+                    "\t\tили не верный формат!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

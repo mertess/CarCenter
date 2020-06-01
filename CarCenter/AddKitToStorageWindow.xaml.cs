@@ -49,7 +49,8 @@ namespace CarCenter
                     !string.IsNullOrEmpty(KitCountTextBox.Text)) {
                     if (KitCountTextBox.Text.TrimStart().StartsWith("-"))
                     {
-                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение", MessageBoxButton.OK);
+                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     storageLogic.AddKitToStorage(new DepositKitBindingModel()
@@ -61,11 +62,12 @@ namespace CarCenter
                     Close();
                 }
                 else
-                    MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK);
+                    MessageBox.Show("Заполните все поля!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -78,7 +80,7 @@ namespace CarCenter
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

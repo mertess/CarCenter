@@ -55,7 +55,7 @@ namespace CarCenter
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -72,12 +72,13 @@ namespace CarCenter
                         Load_Data();
                     }
                 }else
-                    MessageBox.Show("Добавьте хотябы одну машину!", "Сообщение", MessageBoxButton.OK);
+                    MessageBox.Show("Добавьте хотябы одну машину!", "Сообщение",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -85,20 +86,26 @@ namespace CarCenter
         {
             if (DataGridCars.SelectedItems.Count == 1)
             {
-                if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
+                if ((DataGridCars.SelectedItem as BuiltCarViewModel) != null)
                 {
-                    var window = container.Resolve<BuildingCarWindow>();
-                    window.Owner = this;
-                    window.DataContext = DataGridCars.SelectedItem as BuiltCarViewModel;
-                    if (window.ShowDialog().Value)
+                    if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
                     {
-                        Load_Data();
+                        var window = container.Resolve<BuildingCarWindow>();
+                        window.Owner = this;
+                        window.DataContext = DataGridCars.SelectedItem as BuiltCarViewModel;
+                        if (window.ShowDialog().Value)
+                        {
+                            Load_Data();
+                        }
                     }
-                }else
-                    MessageBox.Show("Данная машина уже продана!", "Сообщение", MessageBoxButton.OK);
+                    else
+                        MessageBox.Show("Данная машина уже продана!", "Сообщение",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             else
-                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                MessageBox.Show("Выберите одну запись!", "Сообщение",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ButtonDelete_Click(object sender, EventArgs args)
@@ -107,20 +114,26 @@ namespace CarCenter
             {
                 if (DataGridCars.SelectedItems.Count == 1)
                 {
-                    if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
+                    if ((DataGridCars.SelectedItem as BuiltCarViewModel) != null)
                     {
-                        builtCarLogic.Delete(DataGridCars.SelectedItem as BuiltCarViewModel);
-                        Load_Data();
-                    }else
-                        MessageBox.Show("Данная машина уже продана!", "Сообщение", MessageBoxButton.OK);
+                        if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
+                        {
+                            builtCarLogic.Delete(DataGridCars.SelectedItem as BuiltCarViewModel);
+                            Load_Data();
+                        }
+                        else
+                            MessageBox.Show("Данная машина уже продана!", "Сообщение",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
                 else
-                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                    MessageBox.Show("Выберите одну запись!", "Сообщение", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -172,24 +185,30 @@ namespace CarCenter
             {
                 if (DataGridCars.SelectedItems.Count == 1)
                 {
-                    if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
+                    if ((DataGridCars.SelectedItem as BuiltCarViewModel) != null)
                     {
-                        builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
+                        if ((DataGridCars.SelectedItem as BuiltCarViewModel).SoldDate == null)
                         {
-                            Id = (DataGridCars.SelectedItem as BuiltCarViewModel).Id,
-                            SoldDate = DateTime.Now,
-                            FinalCost = (DataGridCars.SelectedItem as BuiltCarViewModel).FinalCost
-                        });
-                        Load_Data();
-                    }else
-                        MessageBox.Show("Данная машина уже продана!", "Сообщение", MessageBoxButton.OK);
+                            builtCarLogic.CreateOrUpdate(new BuiltCarBindingModel()
+                            {
+                                Id = (DataGridCars.SelectedItem as BuiltCarViewModel).Id,
+                                SoldDate = DateTime.Now,
+                                FinalCost = (DataGridCars.SelectedItem as BuiltCarViewModel).FinalCost
+                            });
+                            Load_Data();
+                        }
+                        else
+                            MessageBox.Show("Данная машина уже продана!", "Сообщение",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
                 else
-                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                    MessageBox.Show("Выберите одну запись!", "Сообщение",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -205,7 +224,7 @@ namespace CarCenter
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -222,7 +241,7 @@ namespace CarCenter
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -231,6 +250,8 @@ namespace CarCenter
             try
             {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                MessageBox.Show("Внимание!\nДанная операция может привести к потери текущих данных!",
+                    "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     backUpLogic.LoadBackUp(dialog.SelectedPath, BackUpTypeEnum.Json);
@@ -240,7 +261,7 @@ namespace CarCenter
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -249,6 +270,8 @@ namespace CarCenter
             try
             {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                MessageBox.Show("Внимание!\nДанная операция может привести к потери текущих данных!",
+                    "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     backUpLogic.LoadBackUp(dialog.SelectedPath, BackUpTypeEnum.Xml);
@@ -258,7 +281,7 @@ namespace CarCenter
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

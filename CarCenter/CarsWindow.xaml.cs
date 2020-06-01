@@ -45,7 +45,7 @@ namespace CarCenter
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -63,15 +63,19 @@ namespace CarCenter
         {
             if(DataGridCars.SelectedItems.Count == 1)
             {
-                var window = container.Resolve<CarWindow>();
-                window.Owner = this;
-                window.DataContext = DataGridCars.SelectedItem as CarViewModel;
-                if (window.ShowDialog().Value)
+                if ((DataGridCars.SelectedItem as CarViewModel) != null)
                 {
-                    Load_Data();
+                    var window = container.Resolve<CarWindow>();
+                    window.Owner = this;
+                    window.DataContext = DataGridCars.SelectedItem as CarViewModel;
+                    if (window.ShowDialog().Value)
+                    {
+                        Load_Data();
+                    }
                 }
             }else
-                MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                MessageBox.Show("Выберите одну запись!", "Сообщение",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ButtonDeleteCar_Click(object sender, RoutedEventArgs e)
@@ -80,15 +84,19 @@ namespace CarCenter
             {
                 if (DataGridCars.SelectedItems.Count == 1)
                 {
-                    carLogic.Delete(DataGridCars.SelectedItem as CarViewModel);
-                    Load_Data();
+                    if ((DataGridCars.SelectedItem as CarViewModel) != null)
+                    {
+                        carLogic.Delete(DataGridCars.SelectedItem as CarViewModel);
+                        Load_Data();
+                    }
                 }
                 else
-                    MessageBox.Show("Выберите одну запись!", "Сообщение", MessageBoxButton.OK);
+                    MessageBox.Show("Выберите одну запись!", "Сообщение",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
             }catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

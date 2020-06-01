@@ -54,7 +54,8 @@ namespace CarCenter
                 {
                     if (KitCountTextBox.Text.TrimStart().StartsWith("-"))
                     {
-                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение", MessageBoxButton.OK);
+                        MessageBox.Show("Количество не может быть отрицательным!", "Предупреждение",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     if (storageLogic.CheckCountKits(new InstalledCarKit()
@@ -71,15 +72,17 @@ namespace CarCenter
                         this.Close();
                     }
                     else
-                        MessageBox.Show("Недостаточно данной комплектации на скадах!", "Предупреждение", MessageBoxButton.OK);
+                        MessageBox.Show("Недостаточно данной комплектации на скадах!", "Предупреждение",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
-                    MessageBox.Show("Заполнены не все поля!", "Предупреждение", MessageBoxButton.OK);
+                    MessageBox.Show("Заполнены не все поля!", "Предупреждение",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -100,7 +103,7 @@ namespace CarCenter
             catch(Exception ex)
             {
                 logger.Warn(ex.Message);
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

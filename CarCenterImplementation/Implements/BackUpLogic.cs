@@ -1,4 +1,5 @@
 ﻿using CarCenterBusinessLogic.BusinessLogic;
+using CarCenterImplementation.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -35,6 +36,7 @@ namespace CarCenterImplementation.Implements
         {
             using(DatabaseContext context = new DatabaseContext())
             {
+                context.Set<T>().Clear();
                 context.Set<T>().AddRange(records);
                 var strOn = $"SET IDENTITY_INSERT dbo.{typeof(T).Name + "s"} ON";
                 var strOff = $"SET IDENTITY_INSERT dbo.{typeof(T).Name + "s"} OFF";
