@@ -1,4 +1,7 @@
 ﻿using CarCenterBusinessLogic.BusinessLogic;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +28,27 @@ namespace CarCenterImplementation.Implements
             using(DatabaseContext context = new DatabaseContext())
             {
                 return context.Set<T>().ToList();
+            }
+        }
+
+        protected override void InsertSetValues<T>(List<T> records)
+        {
+            using(DatabaseContext context = new DatabaseContext())
+            {
+                context.Set<T>().AddRange(records);
+                var strOn = $"SET IDENTITY_INSERT dbo.{typeof(T).Name + "s"} ON";
+                var strOff = $"SET IDENTITY_INSERT dbo.{typeof(T).Name + "s"} OFF";
+                context.Database.OpenConnection();
+                try
+                {
+                    context.Database.ExecuteSqlCommand(strOn);
+                    context.SaveChanges();
+                    context.Database.ExecuteSqlCommand(strOff);
+                }
+                finally
+                {
+                    context.Database.CloseConnection();
+                }
             }
         }
     }

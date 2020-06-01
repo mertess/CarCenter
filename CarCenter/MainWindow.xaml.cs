@@ -225,5 +225,41 @@ namespace CarCenter
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
             }
         }
+
+        private void Click_LoadJsonBackUpMenuItem(object sender, EventArgs args)
+        {
+            try
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    backUpLogic.LoadBackUp(dialog.SelectedPath, BackUpTypeEnum.Json);
+                    Load_Data();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+            }
+        }
+
+        private void Click_LoadXmlBackUpMenuItem(object sender, EventArgs args)
+        {
+            try
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    backUpLogic.LoadBackUp(dialog.SelectedPath, BackUpTypeEnum.Xml);
+                    Load_Data();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK);
+            }
+        }
     }
 }

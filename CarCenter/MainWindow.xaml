@@ -21,8 +21,10 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row ="0" Grid.ColumnSpan="2">
             <MenuItem Header="Back up">
-                <MenuItem Header="Json" Click="Click_SaveJsonBackUpMenuItem"></MenuItem>
-                <MenuItem Header="Xml" Click="Click_SaveXmlBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Сохранить Json back up" Click="Click_SaveJsonBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Сохранить Xml back up" Click="Click_SaveXmlBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Загрузить Json back up" Click="Click_LoadJsonBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Загрузить Xml back up" Click="Click_LoadXmlBackUpMenuItem"></MenuItem>
             </MenuItem>
             <MenuItem Header="Ресурсы">
                 <MenuItem Header="Комплектации" Click="Click_KitsMenuItem"></MenuItem>

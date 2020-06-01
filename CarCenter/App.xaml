@@ -9,7 +9,7 @@
         <sys:String x:Key="password">56321cegaw</sys:String>
         <sys:String x:Key="SmtpHost">smtp.yandex.ru</sys:String>
         <sys:Int32 x:Key="SmtpPort">25</sys:Int32>
-        <sys:String x:Key="ServerEmail">mitya.lagin@yandex.ru</sys:String>
-        <sys:String x:Key="ServerPassword">56321cegawdemalagin2019</sys:String>
+        <sys:String x:Key="ServerEmail">*</sys:String>
+        <sys:String x:Key="ServerPassword">*</sys:String>
     </Application.Resources>
 </Application>

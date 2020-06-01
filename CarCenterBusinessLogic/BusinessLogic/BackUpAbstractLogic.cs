@@ -7,6 +7,8 @@ using System.Runtime.Serialization.Json;
 using CarCenterBusinessLogic.Enums;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Linq;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace CarCenterBusinessLogic.BusinessLogic
 {
@@ -44,6 +46,45 @@ namespace CarCenterBusinessLogic.BusinessLogic
             catch (Exception) { throw; }
         }
 
+        public void LoadBackUp(string folderPath, BackUpTypeEnum backUpType)
+        {
+            try
+            {
+                var filesPaths = Directory.GetFiles(folderPath);
+                if (filesPaths.Count() == 0)
+                    throw new Exception("Выбранная папка не содержит файлов");
+                MethodInfo method = default;
+                switch (backUpType)
+                {
+                    case BackUpTypeEnum.Json:
+                        method = GetType().BaseType.GetTypeInfo().GetDeclaredMethod("DeserializeSetJsonBackUp");
+                        break;
+                    case BackUpTypeEnum.Xml:
+                        method = GetType().BaseType.GetTypeInfo().GetDeclaredMethod("DeserializeSetXmlBackUp");
+                        break;
+                }
+                var filesNames = filesPaths
+                    .Select(f => f.Substring(folderPath.Length + 1, f.Length - folderPath.Length - backUpType.ToString().Length - 2))
+                    .ToList();
+                var models = GetAssembly().GetTypes()
+                    .Where(t => t.FullName.StartsWith("CarCenterImplementation.Models."));
+                var modelsNames = models.Select(m => m.Name);
+                foreach (var model in modelsNames)
+                    if (!filesNames.Contains(model))
+                        throw new Exception($"Отсутствует файл {model}.{backUpType.ToString().ToLower()}");
+                var sortedModels = models
+                    .OrderBy(m => m.GetProperties().Where(p => modelsNames.Contains(p.PropertyType.Name)).Count());
+                foreach(var model in sortedModels)
+                {
+                    var genericMethod = method.MakeGenericMethod(model);
+                    genericMethod.Invoke(this, new object[] { 
+                        filesPaths[filesNames.IndexOf(filesNames.FirstOrDefault(f => f.Equals(model.Name)))]
+                    });
+                }
+            }
+            catch (Exception) { throw; }
+        }
+
         private void CreateJsonBackUp<T>(string folderPath) where T: class, new()
         {
             var records = GetSetValues<T>();
@@ -64,8 +105,27 @@ namespace CarCenterBusinessLogic.BusinessLogic
             }
         }
 
+        private void DeserializeSetJsonBackUp<T>(string filePath) where T: class, new()
+        {
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(List<T>));
+            using(FileStream fs = new FileStream(filePath, FileMode.Open))
+            {
+                InsertSetValues<T>((List<T>)jsonSerializer.ReadObject(fs));
+            }
+        }
+
+        private void DeserializeSetXmlBackUp<T>(string filePath) where T : class, new()
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<T>));
+            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            {
+                InsertSetValues<T>((List<T>)xmlSerializer.Deserialize(fs));
+            }
+        }
+
         protected abstract Assembly GetAssembly();
         protected abstract List<PropertyInfo> GetSetsOfModels();
-        protected abstract List<T> GetSetValues<T>() where T: class, new(); 
+        protected abstract List<T> GetSetValues<T>() where T: class, new();
+        protected abstract void InsertSetValues<T>(List<T> records) where T : class, new();
     }
 }
