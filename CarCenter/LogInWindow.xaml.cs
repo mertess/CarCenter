@@ -38,9 +38,9 @@ namespace CarCenter
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try { 
-                if (!string.IsNullOrEmpty(LoginTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Text)
+                if (!string.IsNullOrEmpty(LoginTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Password)
                     && LoginTextBox.Text.Equals(Application.Current.Resources["login"].ToString()) 
-                    && PasswordTextBox.Text.Equals(Application.Current.Resources["password"].ToString()))
+                    && PasswordTextBox.Password.Equals(Application.Current.Resources["password"].ToString()))
                 {
                     MailService.SetConfig(new MailConfig()
                     {

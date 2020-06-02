@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CarCenter"
         xmlns:conv="clr-namespace:CarCenter.utils"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Сборка машины" Height="300" Width="500" Loaded="Window_Loaded">
+        Title="Сборка машины" Height="300" Width="500" Loaded="Window_Loaded"
+        Icon="resources/inventoryIcon.ico">
     <Window.Resources>
         <conv:DateTimeDateConverter x:Key="Converter"/>
     </Window.Resources>

@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Отчет по проданным машинам" Height="150" Width="330">
+        Title="Отчет по проданным машинам" Height="150" Width="330"
+        Icon="resources/inventoryIcon.ico" ResizeMode="NoResize">
     <TabControl x:Name="ReportSoldCarsTabControl">
         <TabItem x:Name="DocTabItem" Header="Отчет в формате doc">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Почтовый адрес: "/>
-                    <TextBox x:Name="EmailDocTextBox" Width="150"/>
+                    <TextBox x:Name="EmailDocTextBox" Width="150" Margin="5 5 5 5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button x:Name="ButtonSendDoc" Content="Отправить" Margin="5 5 5 5" Click="ButtonSendDoc_Click"/>
@@ -22,7 +23,7 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Почтовый адрес: "/>
-                    <TextBox x:Name="EmailExcelTextBox" Width="150"/>
+                    <TextBox x:Name="EmailExcelTextBox" Width="150" Margin="5 5 5 5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button x:Name="ButtonSendXls" Content="Отправить" Margin="5 5 5 5" Click="ButtonSendXls_Click"/>

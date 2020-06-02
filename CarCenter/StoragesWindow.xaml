@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CarCenter"
         xmlns:conv="clr-namespace:CarCenter.utils"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-         Title="Список хранилищ" Height="350" Width="600">
+        Title="Список хранилищ" Height="350" Width="600"
+        Icon="resources/inventoryIcon.ico">
     <Window.Resources>
         <conv:SelectedGridItemConverter x:Key="Converter"/>
     </Window.Resources>

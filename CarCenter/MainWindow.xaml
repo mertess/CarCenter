@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:CarCenter"
         xmlns:conv="clr-namespace:CarCenter.utils"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="450" Width="600">
+        Title="Автоцентр ''Корыто''. Учет комплектаций" Height="450" Width="600"
+        Icon="resources/inventoryIcon.ico"
+        >
     <Window.Resources>
         <conv:DateTimeDateConverter x:Key="DateConverter"/>
     </Window.Resources>

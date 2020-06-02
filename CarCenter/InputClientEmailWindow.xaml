@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Ввод электронной почты" Height="150" Width="325">
+        Title="Ввод электронной почты" Height="150" Width="325"
+        Icon="resources/inventoryIcon.ico" ResizeMode="NoResize">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Почтовый адрес: "/>
-                <TextBox x:Name="EmailPdfTextBox" Width="150"/>
+                <TextBox x:Name="EmailPdfTextBox" Width="150" Margin="5 5 5 5"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="ButtonCancel" Width="70" Content="Отмена" Margin="5 20 5 5" Click="ButtonCancel_Click"/>

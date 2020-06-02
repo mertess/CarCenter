@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Список машин" Height="350" Width="450">
+        Title="Список машин" Height="350" Width="450"
+        Icon="resources/inventoryIcon.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
