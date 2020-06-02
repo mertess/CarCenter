@@ -4,9 +4,57 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarCenter"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:conv="clr-namespace:CarCenter.utils"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Автоцентр ''Корыто''. Учет комплектаций" Height="450" Width="600"
+        Icon="resources/inventoryIcon.ico"
+        >
+    <Window.Resources>
+        <conv:DateTimeDateConverter x:Key="DateConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18*"></RowDefinition>
+            <RowDefinition Height="401*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row ="0" Grid.ColumnSpan="2">
+            <MenuItem Header="Back up">
+                <MenuItem Header="Сохранить Json back up" Click="Click_SaveJsonBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Сохранить Xml back up" Click="Click_SaveXmlBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Загрузить Json back up" Click="Click_LoadJsonBackUpMenuItem"></MenuItem>
+                <MenuItem Header="Загрузить Xml back up" Click="Click_LoadXmlBackUpMenuItem"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Ресурсы">
+                <MenuItem Header="Комплектации" Click="Click_KitsMenuItem"></MenuItem>
+                <MenuItem Header="Машины" Click="Click_CarsMenuItem"></MenuItem>
+                <MenuItem Header="Хранилища" Click="Click_StoragesMenuItem"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Отчеты">
+                <MenuItem Header="Проданные машины" Click="Click_ReportSoldCarsMenuItem"></MenuItem>
+                <MenuItem Header="Движение комплектаций" Click="Click_ReportKitsMovingMenuItem"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Пополнить хранилище" Click="Click_AddKitToStorageMenuItem"/>
+            <MenuItem Header="Продать" Click="Click_SellCarMenuItem"/>
+        </Menu>
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="Собранные машины">
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridCars">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Машина" Binding="{Binding CarName}" Width="2*" />
+                    <DataGridTextColumn Header="Цена" Binding="{Binding FinalCost}" Width="0.8*" />
+                    <DataGridTextColumn Header="Дата продажи" Binding="{Binding SoldDate, Converter={StaticResource DateConverter}}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <GroupBox Grid.Row ="1"  Grid.Column="1" Header="Операции">
+            <StackPanel>
+                <Button  x:Name="ButtonCreate" Margin="5 15 5 5" Click="ButtonCreate_Click">Собрать машину</Button>
+                <Button  x:Name="ButtonEdit" Margin="5 2 5 5" Click="ButtonEdit_Click">Редактировать</Button>
+                <Button  x:Name="ButtonDelete" Margin="5 2 5 5" Click="ButtonDelete_Click">Разобрать</Button>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>

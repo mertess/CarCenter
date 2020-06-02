@@ -1,0 +1,36 @@
+﻿<Window x:Class="CarCenter.StoragesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarCenter"
+        xmlns:conv="clr-namespace:CarCenter.utils"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="Список хранилищ" Height="350" Width="600"
+        Icon="resources/inventoryIcon.ico">
+    <Window.Resources>
+        <conv:SelectedGridItemConverter x:Key="Converter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="*"></ColumnDefinition>
+            <ColumnDefinition Width="1.7*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Хранилища">
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridStorages">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Хранилище" Width="*" Binding="{Binding StorageName}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Комплектации">
+            <DataGrid AutoGenerateColumns="False" x:Name="DataGridStoragedKits" 
+                      ItemsSource="{Binding ElementName=DataGridStorages, Path=SelectedItem, Converter={StaticResource Converter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Комплектация" Width="2*" Binding="{Binding Key}"/>
+                    <DataGridTextColumn Header="Количество" Width="*" Binding="{Binding Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
+</Window>
