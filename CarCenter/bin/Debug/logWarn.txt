@@ -1,0 +1,7 @@
+2020-05-31 13:38:13.0464|WARN|CarCenter.MainWindow|В каталоге не должны находиться файлы!
+2020-05-31 22:46:23.6827|WARN|CarCenter.MainWindow|Индекс и длина должны указывать на позицию в строке.
+Имя параметра: length
+2020-05-31 22:53:37.0573|WARN|CarCenter.MainWindow|Отсутствует файл Kit.xml
+2020-05-31 23:22:25.0230|WARN|CarCenter.MainWindow|Не удалось загрузить файл или сборку "System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" либо одну из их зависимостей. Не удается найти указанный файл.
+2020-05-31 23:42:11.1455|WARN|CarCenter.MainWindow|Адресат вызова создал исключение.
+2020-06-01 11:14:41.3649|WARN|CarCenter.MainWindow|Отсутствует файл Car.json
