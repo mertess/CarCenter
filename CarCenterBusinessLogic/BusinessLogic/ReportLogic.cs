@@ -18,9 +18,9 @@ namespace CarCenterBusinessLogic.BusinessLogic
         private readonly IKitLogic kitLogic;
         private readonly IBuiltCarLogic builtCarLogic;
         private readonly ICarLogic carLogic;
-        private readonly string TmpWordFilePath = $@"{AppContext.BaseDirectory}\TmpWordReport.docx";
-        private readonly string TmpExcelFilePath = $@"{AppContext.BaseDirectory}\TmpExcelReport.xlsx";
-        private readonly string TmpPdfFilePath = $@"{AppContext.BaseDirectory}\TmpPdfReport.PDF";
+        private readonly string TmpWordFilePath = $@"{AppContext.BaseDirectory}\TmpFiles\WordReport.docx";
+        private readonly string TmpExcelFilePath = $@"{AppContext.BaseDirectory}\TmpFiles\ExcelReport.xlsx";
+        private readonly string TmpPdfFilePath = $@"{AppContext.BaseDirectory}\TmpFiles\PdfReport.PDF";
 
         public ReportLogic(IReportHelper reportHelper, IKitLogic kitLogic, IBuiltCarLogic builtCarLogic, ICarLogic carLogic)
         {

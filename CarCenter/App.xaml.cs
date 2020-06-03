@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,9 +24,25 @@ namespace CarCenter
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            if (!Directory.Exists("TmpFiles"))
+                Directory.CreateDirectory("TmpFiles");
+            if (!Directory.Exists("Logs"))
+                Directory.CreateDirectory("Logs");
+
             IUnityContainer container = new UnityContainer();
             SettingsContainer(container);
             container.Resolve<LogInWindow>().Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            if (Directory.Exists("TmpFiles")) {
+                foreach (var file in Directory.GetFiles("TmpFiles"))
+                    File.Delete(file);
+                Directory.Delete("TmpFiles");
+            }
         }
 
         private void SettingsContainer(IUnityContainer container)
