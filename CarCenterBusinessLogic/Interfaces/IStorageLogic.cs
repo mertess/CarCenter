@@ -9,7 +9,7 @@ namespace CarCenterBusinessLogic.Interfaces
 {
     public interface IStorageLogic
     {
-        List<StorageViewModel> Read(StorageBindingModel model);
+        List<StorageViewModel> Read();
         bool CheckCountKits(InstalledCarKit installedCarKit);
         void AddKitToStorage(DepositKitBindingModel model);
         void RemoveKits(BuiltCarBindingModel model);

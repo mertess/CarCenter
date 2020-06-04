@@ -14,11 +14,11 @@ namespace CarCenterImplementation.Implements
 {
     public class StorageLogic : IStorageLogic
     {
-        public List<StorageViewModel> Read(StorageBindingModel model)
+        public List<StorageViewModel> Read()
         {
             using (DatabaseContext context = new DatabaseContext())
             {
-                return context.Storages.Where(s => model == null || model.Id.HasValue && s.Id == model.Id.Value)
+                return context.Storages
                     .ToList()
                     .Select(s => new StorageViewModel()
                     {

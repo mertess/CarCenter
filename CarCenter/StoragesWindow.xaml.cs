@@ -39,7 +39,7 @@ namespace CarCenter
         {
             try
             {
-                DataGridStorages.ItemsSource = storageLogic.Read(null);
+                DataGridStorages.ItemsSource = storageLogic.Read();
             }
             catch (Exception ex)
             {

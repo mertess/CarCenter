@@ -75,7 +75,7 @@ namespace CarCenter
         {
             try
             {
-                this.StorageComboBox.ItemsSource = storageLogic.Read(null);
+                this.StorageComboBox.ItemsSource = storageLogic.Read();
                 this.KitComboBox.ItemsSource = kitLogic.Read(null);
             }catch(Exception ex)
             {
