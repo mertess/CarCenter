@@ -9,6 +9,6 @@ namespace CarCenterBusinessLogic.ViewModels
     {
         public int Id { set; get; }
         public string CarName { set; get; }
-        public int Cost { set; get; }
+        public decimal Cost { set; get; }
     }
 }

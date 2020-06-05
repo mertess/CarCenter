@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using CarCenterBusinessLogic.ViewModels;
 using NLog;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace CarCenter
 {
@@ -52,7 +53,7 @@ namespace CarCenter
                         {
                             Id = (DataContext as KitViewModel).Id,
                             KitName = KitNameTextBox.Text,
-                            Cost = Convert.ToInt32(KitCostTextBox.Text)
+                            Cost = Decimal.Parse(KitCostTextBox.Text, CultureInfo.InvariantCulture)
                         });
                     }
                     else
@@ -60,7 +61,7 @@ namespace CarCenter
                         kitLogic.CreateOrUpdate(new KitBindingModel()
                         {
                             KitName = KitNameTextBox.Text,
-                            Cost = Convert.ToInt32(KitCostTextBox.Text)
+                            Cost = Decimal.Parse(KitCostTextBox.Text, CultureInfo.InvariantCulture)
                         });
                     }
                     this.DialogResult = true;

@@ -17,6 +17,7 @@ using CarCenterBusinessLogic.BindingModels;
 using CarCenterBusinessLogic.ViewModels;
 using NLog;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace CarCenter
 {
@@ -53,7 +54,7 @@ namespace CarCenter
                         {
                             Id = (DataContext as CarViewModel).Id,
                             CarName = CarNameTextBox.Text,
-                            Cost = Convert.ToInt32(CarCostTextBox.Text)
+                            Cost = Decimal.Parse(CarCostTextBox.Text, CultureInfo.InvariantCulture)
                         });
                     }
                     else
@@ -61,7 +62,7 @@ namespace CarCenter
                         carLogic.CreateOrUpdate(new CarBindingModel()
                         {
                             CarName = CarNameTextBox.Text.ToString(),
-                            Cost = Convert.ToInt32(CarCostTextBox.Text)
+                            Cost = Decimal.Parse(CarCostTextBox.Text, CultureInfo.InvariantCulture)
                         });
                     }
                     this.DialogResult = true;

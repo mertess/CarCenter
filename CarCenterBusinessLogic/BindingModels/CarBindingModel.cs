@@ -8,9 +8,6 @@ namespace CarCenterBusinessLogic.BindingModels
     {
         public int? Id { set; get; }
         public string CarName { set; get; }
-        public int Cost { set; get; }
-        public DateTime? SoldDate { set; get; }
-        //key = kitname, value = (count, InstallationDate) 
-        public Dictionary<string, (int, DateTime?)> CarKits { set; get; }
+        public decimal Cost { set; get; }
     }
 }

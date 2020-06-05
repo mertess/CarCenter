@@ -11,7 +11,7 @@ namespace CarCenterImplementation.Models
         [Required]
         public string CarName { set; get; }
         [Required]
-        public int Cost { set; get; }
+        public decimal Cost { set; get; }
         [ForeignKey("CarId")]
         public virtual List<BuiltCar> BuiltCars { set; get; }
     }

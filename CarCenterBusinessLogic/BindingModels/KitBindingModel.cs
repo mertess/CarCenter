@@ -8,6 +8,6 @@ namespace CarCenterBusinessLogic.BindingModels
     {
         public int? Id { set; get; }
         public string KitName { set; get; }
-        public int Cost { set; get; }
+        public decimal Cost { set; get; }
     }
 }

@@ -8,8 +8,8 @@ namespace CarCenterBusinessLogic.ViewModels
     {
         public DateTime SoldDate { set; get; }
         public string CarName { set; get; }
-        public int CarCost { set; get; }
+        public decimal CarCost { set; get; }
         //key = kitname, value = (cost, count) 
-        public Dictionary<string, (int, int)> CarKits { set; get; }
+        public Dictionary<string, (decimal, int)> CarKits { set; get; }
     }
 }

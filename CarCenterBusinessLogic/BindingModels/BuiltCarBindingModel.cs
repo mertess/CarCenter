@@ -9,7 +9,7 @@ namespace CarCenterBusinessLogic.BindingModels
     {
         public int? Id { set; get; }
         public string CarName { set; get; }
-        public int FinalCost { set; get; }
+        public decimal FinalCost { set; get; }
         public DateTime? SoldDate { set; get; }
         public List<InstalledCarKit> CarKits { set; get; }
     }

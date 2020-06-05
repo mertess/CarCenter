@@ -8,7 +8,7 @@ namespace CarCenterBusinessLogic.ViewModels
     {
         public DateTime DateAction { set; get; }
         public string KitName { set; get; }
-        public int KitCost { set; get; }
+        public decimal KitCost { set; get; }
         public int KitCount { set; get; }
         public string Action { set; get; }
     }
