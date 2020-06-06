@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace CarCenterBusinessLogic.BusinessLogic
+namespace CarCenterBusinessLogic.HelperModels
 {
-    class WordParagraphProperties
+    public class WordParagraphProperties
     {
         public string Size { get; set; }
         public bool Bold { get; set; }

@@ -8,7 +8,6 @@ using DocumentFormat.OpenXml.Office2013.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using CarCenterBusinessLogic.HelperModels;
-using CarCenterBusinessLogic.ViewModels;
 
 namespace CarCenterBusinessLogic.BusinessLogic
 {

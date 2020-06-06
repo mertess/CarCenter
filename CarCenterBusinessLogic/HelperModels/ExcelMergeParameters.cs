@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-namespace CarCenterBusinessLogic.BusinessLogic
+namespace CarCenterBusinessLogic.HelperModels
 {
     class ExcelMergeParameters
     {

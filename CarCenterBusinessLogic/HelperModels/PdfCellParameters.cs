@@ -5,9 +5,9 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 
 
-namespace CarCenterBusinessLogic.BusinessLogic
+namespace CarCenterBusinessLogic.HelperModels
 {
-    class PdfCellParameters
+    public class PdfCellParameters
     {
         public Cell Cell { get; set; }
         public string Text { get; set; }

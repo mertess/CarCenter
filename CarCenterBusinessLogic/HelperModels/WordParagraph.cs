@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarCenterBusinessLogic.BusinessLogic
+namespace CarCenterBusinessLogic.HelperModels
 {
-    class WordParagraph
+    public class WordParagraph
     {
         public List<string> Texts { get; internal set; }
         public WordParagraphProperties TextProperties { get; internal set; }

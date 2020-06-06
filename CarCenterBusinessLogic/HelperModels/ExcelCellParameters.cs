@@ -6,9 +6,9 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 
-namespace CarCenterBusinessLogic.BusinessLogic
+namespace CarCenterBusinessLogic.HelperModels
 {
-    class ExcelCellParameters
+    public class ExcelCellParameters
     {
         public Worksheet Worksheet { get; set; }
         public string ColumnName { get; set; }
